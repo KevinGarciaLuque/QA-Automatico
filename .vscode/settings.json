@@ -1,0 +1,5 @@
+{
+  "java.debug.settings.onBuildFailureProceed": true,
+  "liveServer.settings.port": 5501,
+  "CodeGPT.apiKey": "OpenAI"
+}

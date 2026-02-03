@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: e2e.sprint_6.RF08_5TC_114Test
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 15.49 s <<< FAILURE! -- in e2e.sprint_6.RF08_5TC_114Test
+e2e.sprint_6.RF08_5TC_114Test.RF085_TC114_Listado_SoloEstadosPermitidos -- Time elapsed: 15.49 s <<< FAILURE!
+java.lang.AssertionError: ❌ TC-114 FALLÓ: El 'Listado de Solicitudes' está vacío (No hay solicitudes para mostrar). No se puede validar la regla de estados permitidos.
+	at e2e.sprint_6.RF08_5TC_114Test.validarEstadosListado_FALLA_SiNoHaySolicitudes(RF08_5TC_114Test.java:231)
+	at e2e.sprint_6.RF08_5TC_114Test.RF085_TC114_Listado_SoloEstadosPermitidos(RF08_5TC_114Test.java:309)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

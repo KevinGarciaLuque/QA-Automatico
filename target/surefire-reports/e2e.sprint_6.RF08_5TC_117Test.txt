@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: e2e.sprint_6.RF08_5TC_117Test
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 19.30 s <<< FAILURE! -- in e2e.sprint_6.RF08_5TC_117Test
+e2e.sprint_6.RF08_5TC_117Test.RF085_TC117_Acceso_VerTrazabilidad_DesdeDashboard -- Time elapsed: 19.30 s <<< FAILURE!
+java.lang.AssertionError: ❌ TC-117 FALLÓ: No existe opción/enlace/botón para 'Ver trazabilidad' (o similar) dentro del Dashboard.
+	at e2e.sprint_6.RF08_5TC_117Test.validarQueAbraTrazabilidad(RF08_5TC_117Test.java:198)
+	at e2e.sprint_6.RF08_5TC_117Test.RF085_TC117_Acceso_VerTrazabilidad_DesdeDashboard(RF08_5TC_117Test.java:256)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

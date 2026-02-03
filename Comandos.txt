@@ -1,0 +1,53 @@
+***********************para correr todos las carpetas*************
+mvn -Dtest=e2e.runners.AllTestsSuite test
+
+mvn surefire-report:report site
+
+
+solo ejecutar una prueba**********Sprint_6***********************
+mvn "-Dtest=e2e.sprint_6.RF08_3TC_068Test" test
+
+
+
+
+solo ejecutar una prueba**********Sprint_5***********************
+mvn "-Dtest=e2e.sprint_5.RF08c_TC_026Test" test
+
+
+solo ejecutar una prueba**********Sprint_4***********************
+mvn "-Dtest=e2e.sprint_4.RF05_TC_001Test" test
+
+solo ejecutar una prueba**********Sprint_3***********************
+mvn "-Dtest=e2e.sprint_3.RF1_TC_001Test" test
+
+
+solo ejecutar una prueba**********Sprint_2***********************
+mvn "-Dtest=e2e.sprint_2.RF1_TC_004Test" test
+
+solo ejecutar una prueba**********LOGIN Sptint 1***********************
+mvn "-Dtest=e2e.login.RF4_TC_044Test" test
+
+Eliminar target****************************
+mvn clean
+
+
+mvn test
+
+
+mvn clean test -Dtest=LoginSimpleTest
+
+
+**********************Ejecuta solo tu prueba y regenera el reporte**********
+mvn -Dtest=LoginSimpleTest clean test surefire-report:report
+
+
+***********************para generar el HTML del reporte:*****************
+mvn surefire-report:report
+
+
+****************-U fuerza a Maven a actualizar todas las dependencias desde el repositorio central.*******************
+mvn clean install -U
+
+
+*********************Borra target completo PowerShell*********
+Remove-Item -Recurse -Force .\target

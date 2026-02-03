@@ -1,0 +1,11 @@
+2. Reiniciar el indexador de Java en VS Code
+
+En VS Code:
+
+Presiona Ctrl+Shift+P
+
+Busca: Java: Clean Java Language Server Workspace
+
+Haz clic y elige "Reload"
+
+Esto es clave, porque el error de org.junit.platform.suite.api does not exist a veces se queda en caché en VS Code aunque Maven ya lo resolvió.

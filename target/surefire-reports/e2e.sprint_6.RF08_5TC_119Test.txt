@@ -1,41 +1,107 @@
 -------------------------------------------------------------------------------
 Test set: e2e.sprint_6.RF08_5TC_119Test
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 83.83 s <<< FAILURE! -- in e2e.sprint_6.RF08_5TC_119Test
-e2e.sprint_6.RF08_5TC_119Test.RF085_TC119_Validar_Eventos_Trazabilidad_Correspondan_Solicitud_Seleccionada -- Time elapsed: 83.79 s <<< ERROR!
-org.openqa.selenium.TimeoutException: Expected condition failed: waiting for presence of element located by: By.xpath: //*[self::a or self::button][ contains(translate(normalize-space(.),'TRAZABILIDAD','trazabilidad'),'trazabilidad') or contains(translate(normalize-space(.),'BITÁCORA','bitácora'),'bitácora') or contains(translate(normalize-space(.),'BITACORA','bitacora'),'bitacora') or contains(translate(normalize-space(.),'HISTORIAL','historial'),'historial') or contains(@href,'trazabilidad') or contains(@href,'bitacora') or contains(@href,'historial')] (tried for 60 second(s) with 500 milliseconds interval)
-	at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:84)
-	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
-	at e2e.sprint_6.RF08_5TC_119Test.abrirTrazabilidadDePrimeraFila(RF08_5TC_119Test.java:297)
-	at e2e.sprint_6.RF08_5TC_119Test.RF085_TC119_Validar_Eventos_Trazabilidad_Correspondan_Solicitud_Seleccionada(RF08_5TC_119Test.java:574)
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 78.65 s <<< FAILURE! -- in e2e.sprint_6.RF08_5TC_119Test
+e2e.sprint_6.RF08_5TC_119Test.RF085_TC119_Validar_Eventos_Trazabilidad_Correspondan_Solicitud_Seleccionada -- Time elapsed: 78.60 s <<< FAILURE!
+java.lang.AssertionError: 
+❌ Se mostró error visible en UI: SISTEMA DE PERMISOS DE IMPORTACION
+Inicio
+Ver
+ADMINISTRACIÓN
+Catalogos
+Listar usuarios de aplicación
+INSPECCIÓN
+Asignación de Inspector
+Revisión Documental
+Autorizaciones
+Consulta parametrizada solicitudes
+Dashboard
+Consulta Parametrizada de Solicitudes
+Módulo: Inspecciones / Consulta Parametrizada
+Filtros de Búsqueda
+Fecha desde
+Fecha hasta
+Puesto Cuarentenario
+Seleccione
+Aeropuerto Goloson
+Aeropuerto Internacional Palmerola
+Aeropuerto Juan Manuel Gálvez
+Aeropuerto Ramón Villeda Morales
+Aeropuerto Toncontín
+Agua Caliente
+Amatillo
+Corinto
+El Florido
+El Guasaule
+El Poy
+La Fraternidad
+Las Manos
+Puerto Castilla
+Puerto Cortés
+Puerto Henecan
+Estado de Solicitud
+Seleccione
+Enviada
+Iniciada
+Liberada
+Recepcionada
+Rechazada
+Subsanable
+Inspector
+Importador
+RTN Delegado
+RTN Consignatario
+ConsultarLimpiar
+Resultados de la Consulta
+FECHA ASIGNACIÓN N° DE SOLICITUD ESTADO DELEGADO (RTN - NOMBRE) CONSIGNATARIO (RTN - NOMBRE) PUESTO CUARENTENARIO ACCIONES
+01/29/2026 PCO-EXP-2026-01-00022 Recepcionada 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Puerto Cortés
+Ver SolicitudVer InspecciónVer ActaTrazabilidad
+01/29/2026 XPL-IMP-2026-01-00021 Recepcionada 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Aeropuerto Internacional Palmerola
+Ver SolicitudVer InspecciónVer ActaTrazabilidad
+01/28/2026 GLS-EXP-2026-01-00020 Enviada 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Aeropuerto Goloson
+Ver SolicitudVer InspecciónVer ActaTrazabilidad
+01/27/2026 GLS-EXP-2026-01-00023 Enviada 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Aeropuerto Goloson
+Ver SolicitudVer InspecciónVer ActaTrazabilidad
+01/26/2026 AMT-IMP-2026-01-00019 Subsanable 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Amatillo
+Ver SolicitudVer InspecciónVer ActaTrazabilidad
+01/26/2026 PCO-IMP-2026-01-00024 Enviada 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Puerto Cortés
+Ver SolicitudVer InspecciónVer ActaTrazabilidad
+01/26/2026 PCO-IMP-2026-01-00018 Subsanable 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Puerto Cortés
+Ver SolicitudVer InspecciónVer ActaTrazabilidad
+‹
+Previous
+1
+2
+3
+4
+5
+›
+Next
+2020 SENASA Servicio Nacional de Sanidad e Inocuidad Agroalimentaria.
+Trazabilidad de Solicitud
+×
+Número de Solicitud: PCO-EXP-2026-01-00022
+Estado Actual: Recepcionada
+Recepción
+29/01/2026 - 03:28 AM
+RECEPCIÓN
+Usuario: Jefe Inspectores
+Usuario: Jefe Inspectores
+Recepción
+29/01/2026 - 03:28 AM
+RECEPCIÓN
+Usuario: Jefe Inspectores
+Usuario: Jefe Inspectores
+Registro
+29/01/2026 - 03:26 AM
+REGISTRO DE SOLICITUD (Tipo de Evento: 1)
+Usuario: CARGILL DE HONDURAS, S. DE R.L. (Importador/Solicitante - CLIENTE)
+Usuario: CARGILL DE HONDURAS, S. DE R.L. (Importador/Solicitante)
+Cerrar
+	at e2e.sprint_6.RF08_5TC_119Test.failSiHayErrorVisible(RF08_5TC_119Test.java:103)
+	at e2e.sprint_6.RF08_5TC_119Test.validarEventosCorrespondanASolicitud(RF08_5TC_119Test.java:362)
+	at e2e.sprint_6.RF08_5TC_119Test.RF085_TC119_Validar_Eventos_Trazabilidad_Correspondan_Solicitud_Seleccionada(RF08_5TC_119Test.java:576)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
-Caused by: org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {"method":"xpath","selector":"//*[self::a or self::button][ contains(translate(normalize-space(.),'TRAZABILIDAD','trazabilidad'),'trazabilidad') or contains(translate(normalize-space(.),'BITÁCORA','bitácora'),'bitácora') or contains(translate(normalize-space(.),'BITACORA','bitacora'),'bitacora') or contains(translate(normalize-space(.),'HISTORIAL','historial'),'historial') or contains(@href,'trazabilidad') or contains(@href,'bitacora') or contains(@href,'historial')]"}
-  (Session info: chrome=144.0.7559.97)
-For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
-Build info: version: '4.23.0', revision: '4df0a231af'
-System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21.0.9'
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [333e1ba96c4b39569b694183b05d6824, findElement {value=//*[self::a or self::button][ contains(translate(normalize-space(.),'TRAZABILIDAD','trazabilidad'),'trazabilidad') or contains(translate(normalize-space(.),'BITÁCORA','bitácora'),'bitácora') or contains(translate(normalize-space(.),'BITACORA','bitacora'),'bitacora') or contains(translate(normalize-space(.),'HISTORIAL','historial'),'historial') or contains(@href,'trazabilidad') or contains(@href,'bitacora') or contains(@href,'historial')], using=xpath}]
-Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 144.0.7559.97, chrome: {chromedriverVersion: 144.0.7559.109 (6a8d5e49388..., userDataDir: C:\Users\kevin\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:52470}, goog:processID: 16368, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:52470/devtoo..., se:cdpVersion: 144.0.7559.97, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Session ID: 333e1ba96c4b39569b694183b05d6824
-	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
-	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
-	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
-	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:167)
-	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:138)
-	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
-	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:190)
-	at org.openqa.selenium.remote.service.DriverCommandExecutor.invokeExecute(DriverCommandExecutor.java:216)
-	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:174)
-	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:527)
-	at org.openqa.selenium.remote.ElementLocation$ElementFinder$2.findElement(ElementLocation.java:165)
-	at org.openqa.selenium.remote.ElementLocation.findElement(ElementLocation.java:59)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:357)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:351)
-	at org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:171)
-	at org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:168)
-	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:203)
-	... 5 more
 

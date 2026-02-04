@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="e2e.sprint_6.RF08_5TC_119Test" time="83.834" tests="1" errors="1" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="e2e.sprint_6.RF08_5TC_119Test" time="78.646" tests="1" errors="0" skipped="0" failures="1">
   <properties>
     <property name="java.specification.version" value="21"/>
-    <property name="webdriver.chrome.driver" value="C:\Users\kevin\.cache\selenium\chromedriver\win64\144.0.7559.109\chromedriver.exe"/>
+    <property name="webdriver.chrome.driver" value="C:\Users\kevin\.cache\selenium\chromedriver\win64\144.0.7559.133\chromedriver.exe"/>
     <property name="sun.cpu.isalist" value="amd64"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
     <property name="java.class.path" value="C:\Programacion\Selenium\selenium-java-pdc\target\test-classes;C:\Programacion\Selenium\selenium-java-pdc\target\classes;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-java\4.23.0\selenium-java-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-api\4.23.0\selenium-api-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-chrome-driver\4.23.0\selenium-chrome-driver-4.23.0.jar;C:\Users\kevin\.m2\repository\com\google\auto\service\auto-service-annotations\1.1.1\auto-service-annotations-1.1.1.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-chromium-driver\4.23.0\selenium-chromium-driver-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-json\4.23.0\selenium-json-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-manager\4.23.0\selenium-manager-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-devtools-v125\4.23.0\selenium-devtools-v125-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-devtools-v126\4.23.0\selenium-devtools-v126-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-devtools-v127\4.23.0\selenium-devtools-v127-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-devtools-v85\4.23.0\selenium-devtools-v85-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-edge-driver\4.23.0\selenium-edge-driver-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-firefox-driver\4.23.0\selenium-firefox-driver-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-http\4.23.0\selenium-http-4.23.0.jar;C:\Users\kevin\.m2\repository\dev\failsafe\failsafe\3.3.2\failsafe-3.3.2.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-ie-driver\4.23.0\selenium-ie-driver-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-remote-driver\4.23.0\selenium-remote-driver-4.23.0.jar;C:\Users\kevin\.m2\repository\com\google\guava\guava\33.2.1-jre\guava-33.2.1-jre.jar;C:\Users\kevin\.m2\repository\com\google\guava\failureaccess\1.0.2\failureaccess-1.0.2.jar;C:\Users\kevin\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\kevin\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\kevin\.m2\repository\org\checkerframework\checker-qual\3.42.0\checker-qual-3.42.0.jar;C:\Users\kevin\.m2\repository\com\google\j2objc\j2objc-annotations\3.0.0\j2objc-annotations-3.0.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\semconv\opentelemetry-semconv\1.25.0-alpha\opentelemetry-semconv-1.25.0-alpha.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-api\1.40.0\opentelemetry-api-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-context\1.40.0\opentelemetry-context-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-exporter-logging\1.40.0\opentelemetry-exporter-logging-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-sdk-common\1.40.0\opentelemetry-sdk-common-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-sdk-extension-autoconfigure-spi\1.40.0\opentelemetry-sdk-extension-autoconfigure-spi-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-sdk-extension-autoconfigure\1.40.0\opentelemetry-sdk-extension-autoconfigure-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-api-incubator\1.40.0-alpha\opentelemetry-api-incubator-1.40.0-alpha.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-sdk-trace\1.40.0\opentelemetry-sdk-trace-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-sdk\1.40.0\opentelemetry-sdk-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-sdk-metrics\1.40.0\opentelemetry-sdk-metrics-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-sdk-logs\1.40.0\opentelemetry-sdk-logs-1.40.0.jar;C:\Users\kevin\.m2\repository\net\bytebuddy\byte-buddy\1.14.18\byte-buddy-1.14.18.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-os\4.23.0\selenium-os-4.23.0.jar;C:\Users\kevin\.m2\repository\org\apache\commons\commons-exec\1.4.0\commons-exec-1.4.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-safari-driver\4.23.0\selenium-safari-driver-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-support\4.23.0\selenium-support-4.23.0.jar;C:\Users\kevin\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.2\junit-jupiter-5.10.2.jar;C:\Users\kevin\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.2\junit-jupiter-api-5.10.2.jar;C:\Users\kevin\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\kevin\.m2\repository\org\junit\platform\junit-platform-commons\1.10.2\junit-platform-commons-1.10.2.jar;C:\Users\kevin\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\kevin\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.2\junit-jupiter-params-5.10.2.jar;C:\Users\kevin\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.2\junit-jupiter-engine-5.10.2.jar;C:\Users\kevin\.m2\repository\org\junit\platform\junit-platform-engine\1.10.2\junit-platform-engine-1.10.2.jar;C:\Users\kevin\.m2\repository\org\junit\platform\junit-platform-suite\1.10.2\junit-platform-suite-1.10.2.jar;C:\Users\kevin\.m2\repository\org\junit\platform\junit-platform-suite-api\1.10.2\junit-platform-suite-api-1.10.2.jar;C:\Users\kevin\.m2\repository\org\junit\platform\junit-platform-suite-engine\1.10.2\junit-platform-suite-engine-1.10.2.jar;C:\Users\kevin\.m2\repository\org\junit\platform\junit-platform-suite-commons\1.10.2\junit-platform-suite-commons-1.10.2.jar;C:\Users\kevin\.m2\repository\org\junit\platform\junit-platform-launcher\1.10.2\junit-platform-launcher-1.10.2.jar;C:\Users\kevin\.m2\repository\io\github\bonigarcia\webdrivermanager\5.9.2\webdrivermanager-5.9.2.jar;C:\Users\kevin\.m2\repository\org\slf4j\slf4j-api\2.0.13\slf4j-api-2.0.13.jar;C:\Users\kevin\.m2\repository\com\google\code\gson\gson\2.11.0\gson-2.11.0.jar;C:\Users\kevin\.m2\repository\com\google\errorprone\error_prone_annotations\2.27.0\error_prone_annotations-2.27.0.jar;C:\Users\kevin\.m2\repository\com\github\docker-java\docker-java\3.4.0\docker-java-3.4.0.jar;C:\Users\kevin\.m2\repository\com\github\docker-java\docker-java-core\3.4.0\docker-java-core-3.4.0.jar;C:\Users\kevin\.m2\repository\com\github\docker-java\docker-java-api\3.4.0\docker-java-api-3.4.0.jar;C:\Users\kevin\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.10.3\jackson-annotations-2.10.3.jar;C:\Users\kevin\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.10.3\jackson-databind-2.10.3.jar;C:\Users\kevin\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.10.3\jackson-core-2.10.3.jar;C:\Users\kevin\.m2\repository\org\slf4j\jcl-over-slf4j\1.7.30\jcl-over-slf4j-1.7.30.jar;C:\Users\kevin\.m2\repository\com\github\docker-java\docker-java-transport-httpclient5\3.4.0\docker-java-transport-httpclient5-3.4.0.jar;C:\Users\kevin\.m2\repository\com\github\docker-java\docker-java-transport\3.4.0\docker-java-transport-3.4.0.jar;C:\Users\kevin\.m2\repository\net\java\dev\jna\jna\5.13.0\jna-5.13.0.jar;C:\Users\kevin\.m2\repository\org\brotli\dec\0.1.2\dec-0.1.2.jar;C:\Users\kevin\.m2\repository\org\apache\commons\commons-lang3\3.15.0\commons-lang3-3.15.0.jar;C:\Users\kevin\.m2\repository\org\apache\commons\commons-compress\1.26.2\commons-compress-1.26.2.jar;C:\Users\kevin\.m2\repository\commons-codec\commons-codec\1.17.0\commons-codec-1.17.0.jar;C:\Users\kevin\.m2\repository\commons-io\commons-io\2.16.1\commons-io-2.16.1.jar;C:\Users\kevin\.m2\repository\org\apache\httpcomponents\client5\httpclient5\5.2.1\httpclient5-5.2.1.jar;C:\Users\kevin\.m2\repository\org\apache\httpcomponents\core5\httpcore5\5.2\httpcore5-5.2.jar;C:\Users\kevin\.m2\repository\org\apache\httpcomponents\core5\httpcore5-h2\5.2\httpcore5-h2-5.2.jar;C:\Users\kevin\.m2\repository\org\slf4j\slf4j-simple\2.0.16\slf4j-simple-2.0.16.jar;"/>
@@ -16,7 +16,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="HN"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-21\bin"/>
-    <property name="sun.java.command" value="C:\Users\kevin\AppData\Local\Temp\surefire15045506713461873092\surefirebooter-20260129122500211_3.jar C:\Users\kevin\AppData\Local\Temp\surefire15045506713461873092 2026-01-29T12-24-59_932-jvmRun1 surefire-20260129122500211_1tmp surefire_0-20260129122500211_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\kevin\AppData\Local\Temp\surefire9842159328179693246\surefirebooter-20260203184329969_3.jar C:\Users\kevin\AppData\Local\Temp\surefire9842159328179693246 2026-02-03T18-43-29_737-jvmRun1 surefire-20260203184329969_1tmp surefire_0-20260203184329969_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="e2e.sprint_6.RF08_5TC_119Test"/>
     <property name="surefire.test.class.path" value="C:\Programacion\Selenium\selenium-java-pdc\target\test-classes;C:\Programacion\Selenium\selenium-java-pdc\target\classes;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-java\4.23.0\selenium-java-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-api\4.23.0\selenium-api-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-chrome-driver\4.23.0\selenium-chrome-driver-4.23.0.jar;C:\Users\kevin\.m2\repository\com\google\auto\service\auto-service-annotations\1.1.1\auto-service-annotations-1.1.1.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-chromium-driver\4.23.0\selenium-chromium-driver-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-json\4.23.0\selenium-json-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-manager\4.23.0\selenium-manager-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-devtools-v125\4.23.0\selenium-devtools-v125-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-devtools-v126\4.23.0\selenium-devtools-v126-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-devtools-v127\4.23.0\selenium-devtools-v127-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-devtools-v85\4.23.0\selenium-devtools-v85-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-edge-driver\4.23.0\selenium-edge-driver-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-firefox-driver\4.23.0\selenium-firefox-driver-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-http\4.23.0\selenium-http-4.23.0.jar;C:\Users\kevin\.m2\repository\dev\failsafe\failsafe\3.3.2\failsafe-3.3.2.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-ie-driver\4.23.0\selenium-ie-driver-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-remote-driver\4.23.0\selenium-remote-driver-4.23.0.jar;C:\Users\kevin\.m2\repository\com\google\guava\guava\33.2.1-jre\guava-33.2.1-jre.jar;C:\Users\kevin\.m2\repository\com\google\guava\failureaccess\1.0.2\failureaccess-1.0.2.jar;C:\Users\kevin\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\kevin\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\kevin\.m2\repository\org\checkerframework\checker-qual\3.42.0\checker-qual-3.42.0.jar;C:\Users\kevin\.m2\repository\com\google\j2objc\j2objc-annotations\3.0.0\j2objc-annotations-3.0.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\semconv\opentelemetry-semconv\1.25.0-alpha\opentelemetry-semconv-1.25.0-alpha.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-api\1.40.0\opentelemetry-api-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-context\1.40.0\opentelemetry-context-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-exporter-logging\1.40.0\opentelemetry-exporter-logging-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-sdk-common\1.40.0\opentelemetry-sdk-common-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-sdk-extension-autoconfigure-spi\1.40.0\opentelemetry-sdk-extension-autoconfigure-spi-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-sdk-extension-autoconfigure\1.40.0\opentelemetry-sdk-extension-autoconfigure-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-api-incubator\1.40.0-alpha\opentelemetry-api-incubator-1.40.0-alpha.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-sdk-trace\1.40.0\opentelemetry-sdk-trace-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-sdk\1.40.0\opentelemetry-sdk-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-sdk-metrics\1.40.0\opentelemetry-sdk-metrics-1.40.0.jar;C:\Users\kevin\.m2\repository\io\opentelemetry\opentelemetry-sdk-logs\1.40.0\opentelemetry-sdk-logs-1.40.0.jar;C:\Users\kevin\.m2\repository\net\bytebuddy\byte-buddy\1.14.18\byte-buddy-1.14.18.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-os\4.23.0\selenium-os-4.23.0.jar;C:\Users\kevin\.m2\repository\org\apache\commons\commons-exec\1.4.0\commons-exec-1.4.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-safari-driver\4.23.0\selenium-safari-driver-4.23.0.jar;C:\Users\kevin\.m2\repository\org\seleniumhq\selenium\selenium-support\4.23.0\selenium-support-4.23.0.jar;C:\Users\kevin\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.2\junit-jupiter-5.10.2.jar;C:\Users\kevin\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.2\junit-jupiter-api-5.10.2.jar;C:\Users\kevin\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\kevin\.m2\repository\org\junit\platform\junit-platform-commons\1.10.2\junit-platform-commons-1.10.2.jar;C:\Users\kevin\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\kevin\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.2\junit-jupiter-params-5.10.2.jar;C:\Users\kevin\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.2\junit-jupiter-engine-5.10.2.jar;C:\Users\kevin\.m2\repository\org\junit\platform\junit-platform-engine\1.10.2\junit-platform-engine-1.10.2.jar;C:\Users\kevin\.m2\repository\org\junit\platform\junit-platform-suite\1.10.2\junit-platform-suite-1.10.2.jar;C:\Users\kevin\.m2\repository\org\junit\platform\junit-platform-suite-api\1.10.2\junit-platform-suite-api-1.10.2.jar;C:\Users\kevin\.m2\repository\org\junit\platform\junit-platform-suite-engine\1.10.2\junit-platform-suite-engine-1.10.2.jar;C:\Users\kevin\.m2\repository\org\junit\platform\junit-platform-suite-commons\1.10.2\junit-platform-suite-commons-1.10.2.jar;C:\Users\kevin\.m2\repository\org\junit\platform\junit-platform-launcher\1.10.2\junit-platform-launcher-1.10.2.jar;C:\Users\kevin\.m2\repository\io\github\bonigarcia\webdrivermanager\5.9.2\webdrivermanager-5.9.2.jar;C:\Users\kevin\.m2\repository\org\slf4j\slf4j-api\2.0.13\slf4j-api-2.0.13.jar;C:\Users\kevin\.m2\repository\com\google\code\gson\gson\2.11.0\gson-2.11.0.jar;C:\Users\kevin\.m2\repository\com\google\errorprone\error_prone_annotations\2.27.0\error_prone_annotations-2.27.0.jar;C:\Users\kevin\.m2\repository\com\github\docker-java\docker-java\3.4.0\docker-java-3.4.0.jar;C:\Users\kevin\.m2\repository\com\github\docker-java\docker-java-core\3.4.0\docker-java-core-3.4.0.jar;C:\Users\kevin\.m2\repository\com\github\docker-java\docker-java-api\3.4.0\docker-java-api-3.4.0.jar;C:\Users\kevin\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.10.3\jackson-annotations-2.10.3.jar;C:\Users\kevin\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.10.3\jackson-databind-2.10.3.jar;C:\Users\kevin\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.10.3\jackson-core-2.10.3.jar;C:\Users\kevin\.m2\repository\org\slf4j\jcl-over-slf4j\1.7.30\jcl-over-slf4j-1.7.30.jar;C:\Users\kevin\.m2\repository\com\github\docker-java\docker-java-transport-httpclient5\3.4.0\docker-java-transport-httpclient5-3.4.0.jar;C:\Users\kevin\.m2\repository\com\github\docker-java\docker-java-transport\3.4.0\docker-java-transport-3.4.0.jar;C:\Users\kevin\.m2\repository\net\java\dev\jna\jna\5.13.0\jna-5.13.0.jar;C:\Users\kevin\.m2\repository\org\brotli\dec\0.1.2\dec-0.1.2.jar;C:\Users\kevin\.m2\repository\org\apache\commons\commons-lang3\3.15.0\commons-lang3-3.15.0.jar;C:\Users\kevin\.m2\repository\org\apache\commons\commons-compress\1.26.2\commons-compress-1.26.2.jar;C:\Users\kevin\.m2\repository\commons-codec\commons-codec\1.17.0\commons-codec-1.17.0.jar;C:\Users\kevin\.m2\repository\commons-io\commons-io\2.16.1\commons-io-2.16.1.jar;C:\Users\kevin\.m2\repository\org\apache\httpcomponents\client5\httpclient5\5.2.1\httpclient5-5.2.1.jar;C:\Users\kevin\.m2\repository\org\apache\httpcomponents\core5\httpcore5\5.2\httpcore5-5.2.jar;C:\Users\kevin\.m2\repository\org\apache\httpcomponents\core5\httpcore5-h2\5.2\httpcore5-h2-5.2.jar;C:\Users\kevin\.m2\repository\org\slf4j\slf4j-simple\2.0.16\slf4j-simple-2.0.16.jar;"/>
@@ -32,7 +32,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\kevin\AppData\Local\Temp\surefire15045506713461873092\surefirebooter-20260129122500211_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\kevin\AppData\Local\Temp\surefire9842159328179693246\surefirebooter-20260203184329969_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="21.0.9+7-LTS-338"/>
@@ -60,43 +60,109 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="RF085_TC119_Validar_Eventos_Trazabilidad_Correspondan_Solicitud_Seleccionada" classname="e2e.sprint_6.RF08_5TC_119Test" time="83.795">
-    <error message="Expected condition failed: waiting for presence of element located by: By.xpath: //*[self::a or self::button][ contains(translate(normalize-space(.),&apos;TRAZABILIDAD&apos;,&apos;trazabilidad&apos;),&apos;trazabilidad&apos;) or contains(translate(normalize-space(.),&apos;BITÁCORA&apos;,&apos;bitácora&apos;),&apos;bitácora&apos;) or contains(translate(normalize-space(.),&apos;BITACORA&apos;,&apos;bitacora&apos;),&apos;bitacora&apos;) or contains(translate(normalize-space(.),&apos;HISTORIAL&apos;,&apos;historial&apos;),&apos;historial&apos;) or contains(@href,&apos;trazabilidad&apos;) or contains(@href,&apos;bitacora&apos;) or contains(@href,&apos;historial&apos;)] (tried for 60 second(s) with 500 milliseconds interval)" type="org.openqa.selenium.TimeoutException"><![CDATA[org.openqa.selenium.TimeoutException: Expected condition failed: waiting for presence of element located by: By.xpath: //*[self::a or self::button][ contains(translate(normalize-space(.),'TRAZABILIDAD','trazabilidad'),'trazabilidad') or contains(translate(normalize-space(.),'BITÁCORA','bitácora'),'bitácora') or contains(translate(normalize-space(.),'BITACORA','bitacora'),'bitacora') or contains(translate(normalize-space(.),'HISTORIAL','historial'),'historial') or contains(@href,'trazabilidad') or contains(@href,'bitacora') or contains(@href,'historial')] (tried for 60 second(s) with 500 milliseconds interval)
-	at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:84)
-	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
-	at e2e.sprint_6.RF08_5TC_119Test.abrirTrazabilidadDePrimeraFila(RF08_5TC_119Test.java:297)
-	at e2e.sprint_6.RF08_5TC_119Test.RF085_TC119_Validar_Eventos_Trazabilidad_Correspondan_Solicitud_Seleccionada(RF08_5TC_119Test.java:574)
+  <testcase name="RF085_TC119_Validar_Eventos_Trazabilidad_Correspondan_Solicitud_Seleccionada" classname="e2e.sprint_6.RF08_5TC_119Test" time="78.599">
+    <failure message="❌ Se mostró error visible en UI: SISTEMA DE PERMISOS DE IMPORTACION&#10;Inicio&#10;Ver&#10;ADMINISTRACIÓN&#10;Catalogos&#10;Listar usuarios de aplicación&#10;INSPECCIÓN&#10;Asignación de Inspector&#10;Revisión Documental&#10;Autorizaciones&#10;Consulta parametrizada solicitudes&#10;Dashboard&#10;Consulta Parametrizada de Solicitudes&#10;Módulo: Inspecciones / Consulta Parametrizada&#10;Filtros de Búsqueda&#10;Fecha desde&#10;Fecha hasta&#10;Puesto Cuarentenario&#10;Seleccione&#10;Aeropuerto Goloson&#10;Aeropuerto Internacional Palmerola&#10;Aeropuerto Juan Manuel Gálvez&#10;Aeropuerto Ramón Villeda Morales&#10;Aeropuerto Toncontín&#10;Agua Caliente&#10;Amatillo&#10;Corinto&#10;El Florido&#10;El Guasaule&#10;El Poy&#10;La Fraternidad&#10;Las Manos&#10;Puerto Castilla&#10;Puerto Cortés&#10;Puerto Henecan&#10;Estado de Solicitud&#10;Seleccione&#10;Enviada&#10;Iniciada&#10;Liberada&#10;Recepcionada&#10;Rechazada&#10;Subsanable&#10;Inspector&#10;Importador&#10;RTN Delegado&#10;RTN Consignatario&#10;ConsultarLimpiar&#10;Resultados de la Consulta&#10;FECHA ASIGNACIÓN N° DE SOLICITUD ESTADO DELEGADO (RTN - NOMBRE) CONSIGNATARIO (RTN - NOMBRE) PUESTO CUARENTENARIO ACCIONES&#10;01/29/2026 PCO-EXP-2026-01-00022 Recepcionada 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Puerto Cortés&#10;Ver SolicitudVer InspecciónVer ActaTrazabilidad&#10;01/29/2026 XPL-IMP-2026-01-00021 Recepcionada 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Aeropuerto Internacional Palmerola&#10;Ver SolicitudVer InspecciónVer ActaTrazabilidad&#10;01/28/2026 GLS-EXP-2026-01-00020 Enviada 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Aeropuerto Goloson&#10;Ver SolicitudVer InspecciónVer ActaTrazabilidad&#10;01/27/2026 GLS-EXP-2026-01-00023 Enviada 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Aeropuerto Goloson&#10;Ver SolicitudVer InspecciónVer ActaTrazabilidad&#10;01/26/2026 AMT-IMP-2026-01-00019 Subsanable 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Amatillo&#10;Ver SolicitudVer InspecciónVer ActaTrazabilidad&#10;01/26/2026 PCO-IMP-2026-01-00024 Enviada 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Puerto Cortés&#10;Ver SolicitudVer InspecciónVer ActaTrazabilidad&#10;01/26/2026 PCO-IMP-2026-01-00018 Subsanable 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Puerto Cortés&#10;Ver SolicitudVer InspecciónVer ActaTrazabilidad&#10;‹&#10;Previous&#10;1&#10;2&#10;3&#10;4&#10;5&#10;›&#10;Next&#10;2020 SENASA Servicio Nacional de Sanidad e Inocuidad Agroalimentaria.&#10;Trazabilidad de Solicitud&#10;×&#10;Número de Solicitud: PCO-EXP-2026-01-00022&#10;Estado Actual: Recepcionada&#10;Recepción&#10;29/01/2026 - 03:28 AM&#10;RECEPCIÓN&#10;Usuario: Jefe Inspectores&#10;Usuario: Jefe Inspectores&#10;Recepción&#10;29/01/2026 - 03:28 AM&#10;RECEPCIÓN&#10;Usuario: Jefe Inspectores&#10;Usuario: Jefe Inspectores&#10;Registro&#10;29/01/2026 - 03:26 AM&#10;REGISTRO DE SOLICITUD (Tipo de Evento: 1)&#10;Usuario: CARGILL DE HONDURAS, S. DE R.L. (Importador/Solicitante - CLIENTE)&#10;Usuario: CARGILL DE HONDURAS, S. DE R.L. (Importador/Solicitante)&#10;Cerrar" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: 
+❌ Se mostró error visible en UI: SISTEMA DE PERMISOS DE IMPORTACION
+Inicio
+Ver
+ADMINISTRACIÓN
+Catalogos
+Listar usuarios de aplicación
+INSPECCIÓN
+Asignación de Inspector
+Revisión Documental
+Autorizaciones
+Consulta parametrizada solicitudes
+Dashboard
+Consulta Parametrizada de Solicitudes
+Módulo: Inspecciones / Consulta Parametrizada
+Filtros de Búsqueda
+Fecha desde
+Fecha hasta
+Puesto Cuarentenario
+Seleccione
+Aeropuerto Goloson
+Aeropuerto Internacional Palmerola
+Aeropuerto Juan Manuel Gálvez
+Aeropuerto Ramón Villeda Morales
+Aeropuerto Toncontín
+Agua Caliente
+Amatillo
+Corinto
+El Florido
+El Guasaule
+El Poy
+La Fraternidad
+Las Manos
+Puerto Castilla
+Puerto Cortés
+Puerto Henecan
+Estado de Solicitud
+Seleccione
+Enviada
+Iniciada
+Liberada
+Recepcionada
+Rechazada
+Subsanable
+Inspector
+Importador
+RTN Delegado
+RTN Consignatario
+ConsultarLimpiar
+Resultados de la Consulta
+FECHA ASIGNACIÓN N° DE SOLICITUD ESTADO DELEGADO (RTN - NOMBRE) CONSIGNATARIO (RTN - NOMBRE) PUESTO CUARENTENARIO ACCIONES
+01/29/2026 PCO-EXP-2026-01-00022 Recepcionada 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Puerto Cortés
+Ver SolicitudVer InspecciónVer ActaTrazabilidad
+01/29/2026 XPL-IMP-2026-01-00021 Recepcionada 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Aeropuerto Internacional Palmerola
+Ver SolicitudVer InspecciónVer ActaTrazabilidad
+01/28/2026 GLS-EXP-2026-01-00020 Enviada 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Aeropuerto Goloson
+Ver SolicitudVer InspecciónVer ActaTrazabilidad
+01/27/2026 GLS-EXP-2026-01-00023 Enviada 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Aeropuerto Goloson
+Ver SolicitudVer InspecciónVer ActaTrazabilidad
+01/26/2026 AMT-IMP-2026-01-00019 Subsanable 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Amatillo
+Ver SolicitudVer InspecciónVer ActaTrazabilidad
+01/26/2026 PCO-IMP-2026-01-00024 Enviada 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Puerto Cortés
+Ver SolicitudVer InspecciónVer ActaTrazabilidad
+01/26/2026 PCO-IMP-2026-01-00018 Subsanable 0512199300511 - Tracy Romero 05019001049230 - CARGILL DE HONDURAS, S. DE R.L. Puerto Cortés
+Ver SolicitudVer InspecciónVer ActaTrazabilidad
+‹
+Previous
+1
+2
+3
+4
+5
+›
+Next
+2020 SENASA Servicio Nacional de Sanidad e Inocuidad Agroalimentaria.
+Trazabilidad de Solicitud
+×
+Número de Solicitud: PCO-EXP-2026-01-00022
+Estado Actual: Recepcionada
+Recepción
+29/01/2026 - 03:28 AM
+RECEPCIÓN
+Usuario: Jefe Inspectores
+Usuario: Jefe Inspectores
+Recepción
+29/01/2026 - 03:28 AM
+RECEPCIÓN
+Usuario: Jefe Inspectores
+Usuario: Jefe Inspectores
+Registro
+29/01/2026 - 03:26 AM
+REGISTRO DE SOLICITUD (Tipo de Evento: 1)
+Usuario: CARGILL DE HONDURAS, S. DE R.L. (Importador/Solicitante - CLIENTE)
+Usuario: CARGILL DE HONDURAS, S. DE R.L. (Importador/Solicitante)
+Cerrar
+	at e2e.sprint_6.RF08_5TC_119Test.failSiHayErrorVisible(RF08_5TC_119Test.java:103)
+	at e2e.sprint_6.RF08_5TC_119Test.validarEventosCorrespondanASolicitud(RF08_5TC_119Test.java:362)
+	at e2e.sprint_6.RF08_5TC_119Test.RF085_TC119_Validar_Eventos_Trazabilidad_Correspondan_Solicitud_Seleccionada(RF08_5TC_119Test.java:576)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
-Caused by: org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {"method":"xpath","selector":"//*[self::a or self::button][ contains(translate(normalize-space(.),'TRAZABILIDAD','trazabilidad'),'trazabilidad') or contains(translate(normalize-space(.),'BITÁCORA','bitácora'),'bitácora') or contains(translate(normalize-space(.),'BITACORA','bitacora'),'bitacora') or contains(translate(normalize-space(.),'HISTORIAL','historial'),'historial') or contains(@href,'trazabilidad') or contains(@href,'bitacora') or contains(@href,'historial')]"}
-  (Session info: chrome=144.0.7559.97)
-For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
-Build info: version: '4.23.0', revision: '4df0a231af'
-System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21.0.9'
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [333e1ba96c4b39569b694183b05d6824, findElement {value=//*[self::a or self::button][ contains(translate(normalize-space(.),'TRAZABILIDAD','trazabilidad'),'trazabilidad') or contains(translate(normalize-space(.),'BITÁCORA','bitácora'),'bitácora') or contains(translate(normalize-space(.),'BITACORA','bitacora'),'bitacora') or contains(translate(normalize-space(.),'HISTORIAL','historial'),'historial') or contains(@href,'trazabilidad') or contains(@href,'bitacora') or contains(@href,'historial')], using=xpath}]
-Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 144.0.7559.97, chrome: {chromedriverVersion: 144.0.7559.109 (6a8d5e49388..., userDataDir: C:\Users\kevin\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:52470}, goog:processID: 16368, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:52470/devtoo..., se:cdpVersion: 144.0.7559.97, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Session ID: 333e1ba96c4b39569b694183b05d6824
-	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
-	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
-	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
-	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:167)
-	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:138)
-	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
-	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:190)
-	at org.openqa.selenium.remote.service.DriverCommandExecutor.invokeExecute(DriverCommandExecutor.java:216)
-	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:174)
-	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:527)
-	at org.openqa.selenium.remote.ElementLocation$ElementFinder$2.findElement(ElementLocation.java:165)
-	at org.openqa.selenium.remote.ElementLocation.findElement(ElementLocation.java:59)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:357)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:351)
-	at org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:171)
-	at org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:168)
-	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:203)
-	... 5 more
-]]></error>
+]]></failure>
     <system-out><![CDATA[➡️ Abrir login
 ➡️ Ingresar credenciales
 📸 Screenshot: ./target/S6_RF085_TC119_01_login_ok.png
@@ -106,14 +172,16 @@ Session ID: 333e1ba96c4b39569b694183b05d6824
 ➡️ ID seleccionado (primera fila): 29/01/2026
 📸 Screenshot: ./target/S6_RF085_TC119_03_id_solicitud_29_01_2026.png
 📸 Screenshot: ./target/S6_RF085_TC119_04A_click_detalle.png
-📸 Screenshot: ./target/S6_RF085_TC119_ERROR.png
+📸 Screenshot: ./target/S6_RF085_TC119_05_click_trazabilidad_detalle.png
+📸 Screenshot: ./target/S6_RF085_TC119_06_trazabilidad_abierta.png
+📸 Screenshot: ./target/S6_RF085_TC119_06A_ERROR_VISIBLE.png
 ]]></system-out>
-    <system-err><![CDATA[[main] INFO io.github.bonigarcia.wdm.WebDriverManager - Using chromedriver 144.0.7559.109 (resolved driver for Chrome 144)
-[main] INFO io.github.bonigarcia.wdm.WebDriverManager - Exporting webdriver.chrome.driver as C:\Users\kevin\.cache\selenium\chromedriver\win64\144.0.7559.109\chromedriver.exe
-ene 29, 2026 12:25:03 P. M. org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
+    <system-err><![CDATA[[main] INFO io.github.bonigarcia.wdm.WebDriverManager - Using chromedriver 144.0.7559.133 (resolved driver for Chrome 144)
+[main] INFO io.github.bonigarcia.wdm.WebDriverManager - Exporting webdriver.chrome.driver as C:\Users\kevin\.cache\selenium\chromedriver\win64\144.0.7559.133\chromedriver.exe
+feb 03, 2026 6:43:33 P. M. org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
 WARNING: Unable to find CDP implementation matching 144
-ene 29, 2026 12:25:03 P. M. org.openqa.selenium.chromium.ChromiumDriver lambda$new$5
-WARNING: Unable to find version of CDP to use for 144.0.7559.97. You may need to include a dependency on a specific version of the CDP using something similar to `org.seleniumhq.selenium:selenium-devtools-v86:4.23.0` where the version ("v86") matches the version of the chromium-based browser you're using and the version number of the artifact is the same as Selenium's.
+feb 03, 2026 6:43:33 P. M. org.openqa.selenium.chromium.ChromiumDriver lambda$new$5
+WARNING: Unable to find version of CDP to use for 144.0.7559.110. You may need to include a dependency on a specific version of the CDP using something similar to `org.seleniumhq.selenium:selenium-devtools-v86:4.23.0` where the version ("v86") matches the version of the chromium-based browser you're using and the version number of the artifact is the same as Selenium's.
 ]]></system-err>
   </testcase>
 </testsuite>

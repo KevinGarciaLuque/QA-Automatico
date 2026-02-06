@@ -4,6 +4,18 @@ mvn -Dtest=e2e.runners.AllTestsSuite test
 mvn surefire-report:report site
 
 
+
+
+
+
+solo ejecutar una prueba**********Sprint_7***********************
+mvn "-Dtest=e2e.sprint_7.RF2_01_02_1_TC_001Test" test
+
+
+
+
+
+
 solo ejecutar una prueba**********Sprint_6***********************
 mvn "-Dtest=e2e.sprint_6.RF08_3TC_068Test" test
 

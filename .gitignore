@@ -1,0 +1,61 @@
+# =========================
+# Maven / Java
+# =========================
+target/
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+
+# Logs
+*.log
+
+# =========================
+# Reportes / Evidencias (ajusta si quieres versionarlos)
+# =========================
+# Si tus screenshots o evidencias se guardan en carpeta "evidencias" o "screenshots"
+evidencias/
+screenshots/
+reports/
+allure-results/
+allure-report/
+
+# Maven Surefire / Failsafe
+**/surefire-reports/
+**/failsafe-reports/
+
+# =========================
+# IDEs
+# =========================
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# VS Code
+.vscode/
+
+# =========================
+# OS
+# =========================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+
+# =========================
+# Env / secretos
+# =========================
+.env
+*.env

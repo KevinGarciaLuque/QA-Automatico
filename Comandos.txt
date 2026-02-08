@@ -9,6 +9,8 @@ mvn surefire-report:report site
 
 
 solo ejecutar una prueba**********Sprint_7***********************
+ mvn "-Dtest=e2e.sprint_7.RF2_01_02_1_TC_024Test" test
+
 mvn "-Dtest=e2e.sprint_7.RF2_01_02_1_TC_001Test" test
 
 

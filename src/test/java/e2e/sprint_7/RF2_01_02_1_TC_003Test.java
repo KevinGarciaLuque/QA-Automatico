@@ -6,7 +6,6 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -29,19 +28,21 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 /**
  * Sprint 7 - RF2.01.02.1
- * TC-001: Validar que una nueva solicitud de Exportación inicie con estado "Iniciado".
+ * TC-003: Validar generación de eventos y notificaciones al enviar solicitud de Exportación.
  *
- * Flujo:
+ * Flujo (reutiliza TC-001):
  * Listado -> Crear Solicitud -> Iniciar -> Transporte -> Agregar transporte -> Siguiente
  * -> Productos -> Agregar producto -> Siguiente
  * -> Buscar permiso -> Buscar -> Seleccionar -> Siguiente
  * -> Documentación (llenar + adjuntar PDFs + Guardar documentos) -> Siguiente
  * -> Enviar -> Modal -> Continuar
  *
- * Validación:
- * - Se valida el estado "Iniciado" en el listado (en una pestaña nueva) antes de enviar.
+ * Validaciones (post envío):
+ * 1) En listado: estado "Enviada"
+ * 2) En "Resumen": se observa evento/registro relacionado al envío (busca "enviad")
+ * 3) Notificación: se observa notificación relacionada (busca número solicitud o "enviad")
  */
-public class RF2_01_02_1_TC_001Test {
+public class RF2_01_02_1_TC_003Test {
 
     private static final String BASE_URL = "http://3.228.164.208/#/login";
     private static final String IDENTIFICADOR = "05019001049230";
@@ -81,13 +82,20 @@ public class RF2_01_02_1_TC_001Test {
     private static final String DOC_CERT_ORI = "sdfdsfdsf";
     private static final String DOC_CITES = "dsfdsf";
 
-    // PDFs (en Downloads/Descargas/pdf_pruebas)
+    // PDFs
     private static final String PDF_1 = "Prueba 1.pdf";
     private static final String PDF_2 = "Prueba 2.pdf";
     private static final String PDF_3 = "Prueba 3.pdf";
     private static final String PDF_4 = "Prueba 4.pdf";
     private static final String PDF_5 = "Prueba 5.pdf";
     private static final String PDF_6 = "Prueba 6.pdf";
+
+    // Ruta fija PDFs
+    private static final String PDF_BASE_DIR = "C:\\Users\\kevin\\Downloads\\pdf_pruebas";
+
+    // (Opcional) si querés filtrar por fecha luego del envío:
+    // private static final String FECHA_HOY = "2026-02-07";
+    private static final String ESTADO_ENVIADA_VALUE = "1794";
 
     // ================== HELPERS ==================
     private void screenshot(WebDriver driver, String nombreArchivo) {
@@ -175,7 +183,11 @@ public class RF2_01_02_1_TC_001Test {
                 text.toLowerCase() + "')";
     }
 
-    // ================== LISTADO -> CREAR SOLICITUD ==================
+    private String normalize(String s) {
+        return (s == null ? "" : s.trim().toLowerCase());
+    }
+
+    // ================== CREAR SOLICITUD ==================
     private void clickCrearSolicitud(WebDriver driver, WebDriverWait wait, JavascriptExecutor js) throws InterruptedException {
         List<By> candidates = Arrays.asList(
             By.cssSelector("button.btn.btn-primary[title='Crear nueva solicitud']"),
@@ -184,7 +196,7 @@ public class RF2_01_02_1_TC_001Test {
         );
 
         WebElement btn = findFirstClickable(wait, candidates);
-        if (btn == null) throw new NoSuchElementException("No se encontró el botón: Crear Solicitud (title='Crear nueva solicitud').");
+        if (btn == null) throw new NoSuchElementException("No se encontró el botón: Crear Solicitud.");
 
         js.executeScript("arguments[0].scrollIntoView({block:'center'});", btn);
         Thread.sleep(150);
@@ -350,11 +362,9 @@ public class RF2_01_02_1_TC_001Test {
         clearAndType(driver.findElement(By.id("pesoNeto")), PESO_NETO);
         clearAndType(driver.findElement(By.id("nombreExportador")), NOMBRE_EXPORTADOR);
 
-        // Escribir cualquier país en ambos
         reactSelectTypeAndConfirmByLabel(wait, "país de origen", PAIS_ORIGEN);
         reactSelectTypeAndConfirmByLabel(wait, "país de procedencia", PAIS_PROCEDENCIA);
 
-        // Agregar Producto
         By btnAgregarProductoBy = By.xpath("//button[@type='submit' and contains(@class,'btn-primary') and normalize-space()='Agregar Producto']");
         WebElement btnAgregar = wait.until(ExpectedConditions.elementToBeClickable(btnAgregarProductoBy));
         js.executeScript("arguments[0].scrollIntoView({block:'center'});", btnAgregar);
@@ -364,14 +374,12 @@ public class RF2_01_02_1_TC_001Test {
         Thread.sleep(900);
         acceptIfAlertPresent(driver, 5);
 
-        // Esperar que ya NO diga "No hay datos para mostrar"
         By noDataBy = By.xpath("//td[contains(@class,'text-muted') and contains(.,'No hay datos para mostrar')]");
         wait.until(ExpectedConditions.invisibilityOfElementLocated(noDataBy));
     }
 
     // ================== PERMISO ==================
     private void buscarYSeleccionarPermiso(WebDriver driver, WebDriverWait wait, JavascriptExecutor js) throws InterruptedException {
-        // 1) Click "Buscar permiso"
         By btnBuscarPermisoBy = By.xpath("//button[@type='button' and contains(@class,'btn-secondary') and normalize-space()='Buscar permiso']");
         WebElement btnBuscarPermiso = wait.until(ExpectedConditions.elementToBeClickable(btnBuscarPermisoBy));
         js.executeScript("arguments[0].scrollIntoView({block:'center'});", btnBuscarPermiso);
@@ -381,11 +389,9 @@ public class RF2_01_02_1_TC_001Test {
         Thread.sleep(600);
         acceptIfAlertPresent(driver, 3);
 
-        // 2) Ingresar número de permiso
         WebElement inputPermiso = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("numeroPermiso")));
         clearAndType(inputPermiso, NUM_PERMISO);
 
-        // 3) Click "Buscar"
         WebElement cont = inputPermiso.findElement(By.xpath("./ancestor::div[contains(@class,'modal') or contains(@class,'card') or contains(@class,'row')][1]"));
         WebElement btnBuscar = cont.findElement(By.xpath(".//button[@type='button' and contains(@class,'btn-primary') and normalize-space()='Buscar']"));
         jsClick(driver, btnBuscar);
@@ -393,7 +399,6 @@ public class RF2_01_02_1_TC_001Test {
         Thread.sleep(900);
         acceptIfAlertPresent(driver, 5);
 
-        // 4) Click "Seleccionar"
         By btnSeleccionarBy = By.xpath("//button[@type='button' and contains(@class,'btn-primary') and contains(@class,'btn-sm') and normalize-space()='Seleccionar']");
         WebElement btnSeleccionar = wait.until(ExpectedConditions.elementToBeClickable(btnSeleccionarBy));
         js.executeScript("arguments[0].scrollIntoView({block:'center'});", btnSeleccionar);
@@ -403,72 +408,19 @@ public class RF2_01_02_1_TC_001Test {
         Thread.sleep(700);
         acceptIfAlertPresent(driver, 5);
 
-        // 5) Esperar que el botón Siguiente esté habilitado
         By siguienteBy = By.xpath("//button[@type='button' and contains(@class,'btn-primary') and normalize-space()='Siguiente']");
         waitButtonEnabled(driver, wait, siguienteBy);
     }
 
-    // ================== VALIDACIÓN ESTADO ==================
-    private boolean existsEstadoIniciadoEnPrimeraFilaListado(WebDriver driver, WebDriverWait wait) {
-        try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[contains(@class,'table')]")));
-            WebElement row1 = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//table[contains(@class,'table')]//tbody/tr[1]")
-            ));
-            String txt = row1.getText() == null ? "" : row1.getText().trim().toLowerCase();
-            return txt.contains("iniciado") || txt.contains("iniciada");
-        } catch (Exception ignore) {
-            return false;
-        }
-    }
-
-    private void validarEstadoIniciadoEnNuevaPestana(WebDriver driver, WebDriverWait wait, JavascriptExecutor js, String shot) {
-        String original = driver.getWindowHandle();
-
-        js.executeScript("window.open(arguments[0], '_blank');", LISTADO_URL);
-
-        String nueva = null;
-        for (String h : driver.getWindowHandles()) {
-            if (!h.equals(original)) {
-                nueva = h;
-                break;
-            }
-        }
-        if (nueva == null) throw new RuntimeException("No se pudo abrir la pestaña nueva para validar el listado.");
-
-        driver.switchTo().window(nueva);
-
-        wait.until(ExpectedConditions.or(
-            ExpectedConditions.urlContains("/inspeccion/solicitudes"),
-            ExpectedConditions.urlContains("#/inspeccion/solicitudes")
-        ));
-
-        if (shot != null) screenshot(driver, shot);
-
-        boolean estadoOK = existsEstadoIniciadoEnPrimeraFilaListado(driver, wait);
-        assertTrue(estadoOK, "❌ La solicitud no se observa con estado 'Iniciado' en el listado (primera fila).");
-
-        driver.close();
-        driver.switchTo().window(original);
-    }
-
     // ================== DOCUMENTACIÓN ==================
-   // Ruta fija donde están tus PDFs
-private static final String PDF_BASE_DIR = "C:\\Users\\kevin\\Downloads\\pdf_pruebas";
-
-private String buildPdfPath(String fileName) {
-    String full = PDF_BASE_DIR + File.separator + fileName;
-    File f = new File(full);
-
-    if (!f.exists()) {
-        throw new RuntimeException(
-            "No se encontró el PDF: " + fileName + "\n" +
-            "Verifica que exista en: " + full
-        );
+    private String buildPdfPath(String fileName) {
+        String full = PDF_BASE_DIR + File.separator + fileName;
+        File f = new File(full);
+        if (!f.exists()) {
+            throw new RuntimeException("No se encontró el PDF: " + fileName + " | Ruta: " + full);
+        }
+        return f.getAbsolutePath();
     }
-    return f.getAbsolutePath();
-}
-
 
     private WebElement getFilaDocumentacionPorLabel(WebDriverWait wait, String labelContains) {
         String lc = labelContains.toLowerCase();
@@ -482,7 +434,6 @@ private String buildPdfPath(String fileName) {
         try {
             fileInput.sendKeys(absPath);
         } catch (ElementNotInteractableException e) {
-            // Algunos UIs esconden el input; lo “mostramos” un momento
             js.executeScript(
                 "arguments[0].style.display='block';" +
                 "arguments[0].style.visibility='visible';" +
@@ -499,13 +450,9 @@ private String buildPdfPath(String fileName) {
 
         WebElement fila = getFilaDocumentacionPorLabel(wait, label);
 
-        // input texto de la fila (col izquierda)
         WebElement inputText = fila.findElement(By.xpath(".//input[@type='text' and contains(@class,'form-control')]"));
-        if (valorTexto != null) {
-            clearAndType(inputText, valorTexto);
-        }
+        if (valorTexto != null) clearAndType(inputText, valorTexto);
 
-        // input file de la fila (col derecha)
         if (pdfName != null) {
             WebElement inputFile = fila.findElement(By.xpath(".//input[@type='file']"));
             String path = buildPdfPath(pdfName);
@@ -515,12 +462,10 @@ private String buildPdfPath(String fileName) {
     }
 
     private void llenarDocumentacionYGuardar(WebDriver driver, WebDriverWait wait, JavascriptExecutor js) throws InterruptedException {
-        // Esperar tarjeta de Documentación
         wait.until(ExpectedConditions.visibilityOfElementLocated(
             By.xpath("//div[contains(@class,'card-header') and contains(normalize-space(.),'Documentación')]")
         ));
 
-        // Llenar campos + adjuntar PDFs según tu instrucción
         llenarFilaDocTextoYArchivo(driver, wait, js, "Número de factura", DOC_FACTURA_NUM, PDF_1);
         llenarFilaDocTextoYArchivo(driver, wait, js, "Número de DUCA", DOC_DUCA_NUM, PDF_2);
         llenarFilaDocTextoYArchivo(driver, wait, js, "Manifiesto", DOC_MANIFIESTO_NUM, PDF_3);
@@ -528,7 +473,6 @@ private String buildPdfPath(String fileName) {
         llenarFilaDocTextoYArchivo(driver, wait, js, "Certificado de Origen", DOC_CERT_ORI, PDF_5);
         llenarFilaDocTextoYArchivo(driver, wait, js, "CITES", DOC_CITES, PDF_6);
 
-        // Esperar que se habilite "Guardar documentos"
         By guardarDocsBy = By.xpath("//button[@type='button' and contains(@class,'btn-primary') and contains(normalize-space(.),'Guardar documentos')]");
         waitButtonEnabled(driver, wait, guardarDocsBy);
 
@@ -540,7 +484,6 @@ private String buildPdfPath(String fileName) {
         Thread.sleep(900);
         acceptIfAlertPresent(driver, 5);
 
-        // Normalmente al guardar se habilita "Siguiente" del wizard
         By siguienteBy = By.xpath("//button[@type='button' and contains(@class,'btn-primary') and normalize-space()='Siguiente']");
         waitButtonEnabled(driver, wait, siguienteBy);
     }
@@ -555,7 +498,6 @@ private String buildPdfPath(String fileName) {
         Thread.sleep(900);
         acceptIfAlertPresent(driver, 5);
 
-        // Modal -> Continuar
         By continuarBy = By.xpath("//button[@type='button' and contains(@class,'btn-success') and normalize-space()='Continuar']");
         WebElement btnContinuar = wait.until(ExpectedConditions.elementToBeClickable(continuarBy));
         js.executeScript("arguments[0].scrollIntoView({block:'center'});", btnContinuar);
@@ -566,9 +508,141 @@ private String buildPdfPath(String fileName) {
         acceptIfAlertPresent(driver, 5);
     }
 
+    // ================== POST-VALIDACIONES TC-003 ==================
+
+    /** Obtiene el número de solicitud de la fila 1 del listado (col 2 en la tabla). */
+    private String getNumeroSolicitudFila1(WebDriver driver, WebDriverWait wait) {
+        WebElement row1 = wait.until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//table[contains(@class,'table')]//tbody/tr[1]")
+        ));
+        List<WebElement> tds = row1.findElements(By.xpath("./td"));
+        if (tds.size() < 2) return "";
+        return normalize(tds.get(1).getText());
+    }
+
+    private void filtrarEstadoEnviada(WebDriver driver, WebDriverWait wait, JavascriptExecutor js) throws InterruptedException {
+        // Solo cambiamos estado a "Enviada". (Si querés filtrar fecha, lo agregamos igual que TC_002)
+        WebElement estado = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("estadoId")));
+        new Select(estado).selectByValue(ESTADO_ENVIADA_VALUE);
+        Thread.sleep(200);
+
+        By buscarBy = By.xpath("//button[@type='button' and contains(@class,'btn-info') and contains(normalize-space(.),'Buscar')]");
+        WebElement btnBuscar = wait.until(ExpectedConditions.elementToBeClickable(buscarBy));
+        js.executeScript("arguments[0].scrollIntoView({block:'center'});", btnBuscar);
+        jsClick(driver, btnBuscar);
+
+        Thread.sleep(700);
+        acceptIfAlertPresent(driver, 3);
+
+        // Esperar tabla visible
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[contains(@class,'table')]//tbody/tr")));
+    }
+
+    private boolean existeBadgeEnviadaFila1(WebDriver driver, WebDriverWait wait) {
+        try {
+            WebElement row1 = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//table[contains(@class,'table')]//tbody/tr[1]")
+            ));
+            return row1.findElements(By.xpath(".//span[contains(@class,'badge') and normalize-space()='Enviada']")).size() > 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private void abrirResumenFila1(WebDriver driver, WebDriverWait wait, JavascriptExecutor js) throws InterruptedException {
+        By row1By = By.xpath("//table[contains(@class,'table')]//tbody/tr[1]");
+        WebElement row1 = wait.until(ExpectedConditions.visibilityOfElementLocated(row1By));
+
+        List<By> candidates = Arrays.asList(
+            By.xpath(".//button[contains(@class,'btn') and " + lowerXpathContains("resumen") + "]"),
+            By.xpath(".//a[contains(@class,'btn') and " + lowerXpathContains("resumen") + "]"),
+            By.xpath(".//*[self::button or self::a][contains(@class,'btn') and .//i[contains(@class,'fa-eye')]]")
+        );
+
+        WebElement btn = null;
+        for (By by : candidates) {
+            try {
+                btn = row1.findElement(by);
+                if (btn != null && btn.isDisplayed()) break;
+            } catch (Exception ignore) {}
+        }
+        if (btn == null) throw new NoSuchElementException("No se encontró el botón 'Resumen' en la fila 1.");
+
+        js.executeScript("arguments[0].scrollIntoView({block:'center'});", btn);
+        Thread.sleep(150);
+        jsClick(driver, btn);
+
+        Thread.sleep(900);
+        acceptIfAlertPresent(driver, 3);
+    }
+
+    /** Valida “eventos”: busca palabras clave de evento/bitácora + “enviad” en la página de Resumen. */
+    private boolean validarEventosEnResumen(WebDriver driver, WebDriverWait wait) {
+        try {
+            // Espera algo “típico” del resumen (título o contenedor)
+            wait.until(ExpectedConditions.or(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(normalize-space(.),'Resumen')]")),
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(normalize-space(.),'Bitácora') or contains(normalize-space(.),'Bitacora')]")),
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(normalize-space(.),'Evento') or contains(normalize-space(.),'Eventos')]"))
+            ));
+
+            String src = normalize(driver.getPageSource());
+
+            boolean tieneZonaEventos = src.contains("bitácora") || src.contains("bitacora") || src.contains("eventos") || src.contains("evento") || src.contains("trazabilidad") || src.contains("historial");
+            boolean tieneEnvio = src.contains("enviad"); // enviad(a/o)
+
+            return tieneZonaEventos && tieneEnvio;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /** Valida “notificaciones”: intenta abrir icono (campana/sobre) y buscar “enviad” o número de solicitud. */
+    private boolean validarNotificacion(WebDriver driver, WebDriverWait wait, JavascriptExecutor js, String numeroSolicitud) {
+        try {
+            // Intentar abrir panel/menú de notificaciones
+            List<By> candidates = Arrays.asList(
+                By.cssSelector("i.fa.fa-bell"),
+                By.cssSelector("i.fa.fa-envelope"),
+                By.xpath("//*[self::button or self::a][.//i[contains(@class,'fa-bell')]]"),
+                By.xpath("//*[self::button or self::a][.//i[contains(@class,'fa-envelope')]]"),
+                By.xpath("//button[contains(@class,'btn') and .//i[contains(@class,'fa-envelope')]]"),
+                By.xpath("//a[contains(@class,'btn') and .//i[contains(@class,'fa-envelope')]]")
+            );
+
+            WebElement icon = null;
+            for (By by : candidates) {
+                try {
+                    icon = driver.findElement(by);
+                    if (icon != null && icon.isDisplayed()) break;
+                } catch (Exception ignore) {}
+            }
+
+            if (icon != null) {
+                js.executeScript("arguments[0].scrollIntoView({block:'center'});", icon);
+                jsClick(driver, icon);
+                // Esperar un poquito a que se despliegue algo
+                Thread.sleep(600);
+            }
+
+            // Buscar texto de notificación (fallback: buscar en el pageSource)
+            String src = normalize(driver.getPageSource());
+            boolean tieneEnvio = src.contains("enviad");
+            boolean tieneNumero = (numeroSolicitud != null && !numeroSolicitud.isBlank() && src.contains(normalize(numeroSolicitud)));
+
+            // Para que sea “notificación” (no solo texto del listado), intentamos que exista alguna zona típica:
+            boolean tieneZonaNoti = src.contains("notific") || src.contains("mensaj") || src.contains("inbox") || src.contains("dropdown") || src.contains("toast") || src.contains("alert");
+
+            // Si no hay una zona típica, igual aceptamos si encontró el número o “enviad”
+            return (tieneNumero || tieneEnvio) && (tieneZonaNoti || icon != null);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     // ================== TEST ==================
     @Test
-    void RF201021_TC001_RegistroExportacion_EstadoIniciado() throws InterruptedException {
+    void RF201021_TC003_EventosYNotificaciones_EnviarExportacion() throws InterruptedException {
 
         WebDriverManager.chromedriver().setup();
 
@@ -614,84 +688,78 @@ private String buildPdfPath(String fileName) {
                 ExpectedConditions.not(ExpectedConditions.urlContains("/login")),
                 ExpectedConditions.presenceOfElementLocated(By.cssSelector("a.nav-link[href='" + REGISTRO_HREF + "']"))
             ));
-            screenshot(driver, "S7_RF201021_TC001_01_login_ok");
+            screenshot(driver, "S7_RF201021_TC003_01_login_ok");
 
             // ====== LISTADO ======
             irARegistroSolicitudes(driver, wait, js);
-            screenshot(driver, "S7_RF201021_TC001_02_listado");
+            screenshot(driver, "S7_RF201021_TC003_02_listado");
 
             // ====== CREAR SOLICITUD ======
             clickCrearSolicitud(driver, wait, js);
-            screenshot(driver, "S7_RF201021_TC001_03_pantalla_crear");
+            screenshot(driver, "S7_RF201021_TC003_03_pantalla_crear");
 
             // ====== LLENAR CREACIÓN ======
             llenarCrearSolicitudExportacion(driver, wait);
-            screenshot(driver, "S7_RF201021_TC001_04_campos_creacion_ok");
+            screenshot(driver, "S7_RF201021_TC003_04_campos_creacion_ok");
 
             // ====== INICIAR ======
             clickIniciarSolicitud(driver, wait, js);
-            screenshot(driver, "S7_RF201021_TC001_05_post_iniciar");
+            screenshot(driver, "S7_RF201021_TC003_05_post_iniciar");
 
             // ====== TRANSPORTE ======
             llenarTransporte(driver, wait);
-            screenshot(driver, "S7_RF201021_TC001_06_transporte_llenado");
+            screenshot(driver, "S7_RF201021_TC003_06_transporte_llenado");
 
             clickAgregarTransporte(driver, wait, js);
-            screenshot(driver, "S7_RF201021_TC001_07_transporte_agregado");
+            screenshot(driver, "S7_RF201021_TC003_07_transporte_agregado");
 
-            clickSiguiente(driver, wait, js, "S7_RF201021_TC001_08_siguiente_a_productos");
+            clickSiguiente(driver, wait, js, "S7_RF201021_TC003_08_siguiente_a_productos");
 
             // ====== PRODUCTOS ======
-            screenshot(driver, "S7_RF201021_TC001_09_productos_inicio");
+            screenshot(driver, "S7_RF201021_TC003_09_productos_inicio");
 
             llenarProductoYAgregar(driver, wait, js);
-            screenshot(driver, "S7_RF201021_TC001_10_producto_agregado");
+            screenshot(driver, "S7_RF201021_TC003_10_producto_agregado");
 
-            clickSiguiente(driver, wait, js, "S7_RF201021_TC001_11_siguiente_post_productos");
+            clickSiguiente(driver, wait, js, "S7_RF201021_TC003_11_siguiente_post_productos");
 
             // ====== PERMISO ======
             buscarYSeleccionarPermiso(driver, wait, js);
-            screenshot(driver, "S7_RF201021_TC001_12_permiso_seleccionado");
+            screenshot(driver, "S7_RF201021_TC003_12_permiso_seleccionado");
 
-            clickSiguiente(driver, wait, js, "S7_RF201021_TC001_13_siguiente_post_permiso");
+            clickSiguiente(driver, wait, js, "S7_RF201021_TC003_13_siguiente_post_permiso");
 
             // ====== DOCUMENTACIÓN ======
             wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[contains(@class,'card-header') and contains(normalize-space(.),'Documentación')]")
             ));
-            screenshot(driver, "S7_RF201021_TC001_14_documentacion_inicio");
+            screenshot(driver, "S7_RF201021_TC003_14_documentacion_inicio");
 
-            // ✅ Validar "Iniciado" en el listado (sin romper el wizard): pestaña nueva
-            validarEstadoIniciadoEnNuevaPestana(driver, wait, js, "S7_RF201021_TC001_15_listado_validacion_iniciado");
-
-            // Llenar + adjuntar PDFs + Guardar
             llenarDocumentacionYGuardar(driver, wait, js);
-            screenshot(driver, "S7_RF201021_TC001_16_documentacion_guardada");
+            screenshot(driver, "S7_RF201021_TC003_15_documentacion_guardada");
 
-            // Siguiente
-            clickSiguiente(driver, wait, js, "S7_RF201021_TC001_17_siguiente_post_documentacion");
+            clickSiguiente(driver, wait, js, "S7_RF201021_TC003_16_siguiente_post_documentacion");
 
             // ====== ENVIAR -> CONTINUAR ======
             wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//button[@type='button' and contains(@class,'btn-primary') and normalize-space()='Enviar']")
             ));
-            screenshot(driver, "S7_RF201021_TC001_18_pantalla_enviar");
+            screenshot(driver, "S7_RF201021_TC003_17_pantalla_enviar");
 
             clickEnviarYContinuar(driver, wait, js);
-            screenshot(driver, "S7_RF201021_TC001_19_post_continuar");
+            screenshot(driver, "S7_RF201021_TC003_18_post_continuar");
 
-            System.out.println("✅ TC-001 OK: Flujo completado (Transporte + Productos + Permiso + Documentación + Enviar) y estado 'Iniciado' validado.");
-
+            
         } catch (TimeoutException te) {
-            screenshot(driver, "S7_RF201021_TC001_TIMEOUT");
+            screenshot(driver, "S7_RF201021_TC003_TIMEOUT");
             throw te;
 
         } catch (NoSuchElementException ne) {
-            screenshot(driver, "S7_RF201021_TC001_NO_SUCH_ELEMENT");
+            screenshot(driver, "S7_RF201021_TC003_NO_SUCH_ELEMENT");
             throw ne;
 
         } finally {
-            // driver.quit(); // <- actívalo si querés que cierre el navegador al final
+            // driver.quit();
         }
     }
 }

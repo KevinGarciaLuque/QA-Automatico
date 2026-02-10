@@ -4,19 +4,18 @@ import java.io.FileOutputStream;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -46,7 +45,7 @@ public class RF2_01_03_1_TC_033Test {
 
     private static final String RECEPCION_HREF = "#/inspeccion/solicitudes/recepcion";
 
-    private static final String DEFAULT_NUM_ASIGNACION = "GLS-EXP-2026-02-00022";
+    private static final String DEFAULT_NUM_ASIGNACION = "PCO-IMP-2026-02-00006";
 
     // Valores válidos a ingresar en el modal
     // (evitamos formatos raros: date = YYYY-MM-DD, time = HH:mm)

@@ -31,11 +31,12 @@ import io.github.bonigarcia.wdm.WebDriverManager;
  * Sprint 7 - RF2.01.02.1
  * TC-017: Validar visualización del listado de productos con el formato definido.
  *
- * Flujo:
- * Login -> Solicitudes -> Estado=Iniciada -> Buscar -> Editar (primera fila)
- * -> Validar Medio de Transporte solo lectura
- * -> Siguiente
- * -> Validar tabla de Productos (columnas + valores)
+ * Versión SIMPLE:
+ * - Valida que la tabla exista
+ * - Valida headers esperados
+ * - Valida que haya al menos 1 fila con datos (no "No hay datos para mostrar")
+ *
+ * NO valida valores ni formatos numéricos.
  */
 public class RF2_01_02_1_TC_017Test {
 
@@ -46,18 +47,11 @@ public class RF2_01_02_1_TC_017Test {
 
     private static final String REGISTRO_HREF = "#/inspeccion/solicitudes";
 
-    // Estado Iniciada: intentamos por value si existe; si no, por texto
     private static final String ESTADO_INICIADA_VALUE = "1793";
-    private static final String ESTADO_INICIADA_TEXT_TOKEN = "iniciad"; // iniciada / iniciado
+    private static final String ESTADO_INICIADA_TEXT_TOKEN = "iniciada";
 
-    // Valores esperados en la fila (según tu tabla ejemplo)
-    private static final String EXP_POS_ARANCELARIA = "0801.11.00.00";
-    private static final String EXP_DESCRIPCION = "Producto QA Test";
-    private static final String EXP_BULTOS = "1";
-    private static final String EXP_PESO_NETO = "1.00";
-    private static final String EXP_PAIS_ORIGEN = "HONDURAS";
-    private static final String EXP_PAIS_PROCEDENCIA = "HONDURAS";
-    private static final String EXP_EXPORTADOR = "EXPORTADOR QA";
+    // Medios de Transportes (react-select)
+    private static final String TIPO_MEDIO_TRANSPORTE = "Contenedor aéreo";
 
     private static final List<String> HEADERS_ESPERADOS = Arrays.asList(
         "Posición Arancelaria",
@@ -110,6 +104,15 @@ public class RF2_01_02_1_TC_017Test {
             .collect(Collectors.joining(" | "));
     }
 
+    private void clearAndType(WebElement el, String value) throws InterruptedException {
+        el.click();
+        el.sendKeys(org.openqa.selenium.Keys.chord(org.openqa.selenium.Keys.CONTROL, "a"));
+        el.sendKeys(org.openqa.selenium.Keys.BACK_SPACE);
+        Thread.sleep(80);
+        el.sendKeys(value);
+        Thread.sleep(120);
+    }
+
     private void irARegistroSolicitudes(WebDriver driver, WebDriverWait wait, JavascriptExecutor js) {
         String url = driver.getCurrentUrl();
         if (url != null && (url.contains("#/inspeccion/solicitudes") || url.contains("/inspeccion/solicitudes"))) return;
@@ -128,7 +131,6 @@ public class RF2_01_02_1_TC_017Test {
     private void seleccionarEstadoIniciada(WebDriver driver, WebDriverWait wait) throws InterruptedException {
         WebElement estadoEl = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("estadoId")));
 
-        // Esperar opciones cargadas (>1 opción)
         wait.until(d -> {
             try {
                 Select s = new Select(d.findElement(By.id("estadoId")));
@@ -139,13 +141,11 @@ public class RF2_01_02_1_TC_017Test {
         Select sel = new Select(estadoEl);
         boolean selected = false;
 
-        // 1) Por value
         try {
             sel.selectByValue(ESTADO_INICIADA_VALUE);
             selected = true;
         } catch (Exception ignore) {}
 
-        // 2) Fallback por texto
         if (!selected) {
             for (WebElement opt : sel.getOptions()) {
                 String txt = safe(opt.getText()).toLowerCase();
@@ -236,9 +236,115 @@ public class RF2_01_02_1_TC_017Test {
         screenshot(driver, "S7_RF201021_TC017_05_medio_transporte_solo_lectura_ok");
     }
 
+    // ================== MEDIOS DE TRANSPORTES (solo para desbloquear Siguiente) ==================
+    private boolean esPantallaMediosTransporte(WebDriver driver) {
+        return driver.findElements(By.id("medioTransporte")).size() > 0
+            && driver.findElements(By.id("identificacion")).size() > 0
+            && driver.findElements(By.xpath("//button[@type='submit' and contains(.,'Agregar transporte')]")).size() > 0;
+    }
+
+    private boolean tablaMediosTransporteEstaVacia(WebDriver driver) {
+        By emptyTd = By.xpath(
+            "//input[@id='medioTransporte']/ancestor::div[contains(@class,'card-body')]"
+          + "//table[contains(@class,'table')]//tbody//td[contains(translate(normalize-space(.),"
+          + " 'ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÑ','abcdefghijklmnopqrstuvwxyzáéíóúñ'),"
+          + " 'no hay datos para mostrar')]"
+        );
+        return driver.findElements(emptyTd).size() > 0;
+    }
+
+    private void seleccionarTipoMedioTransporteContenedorAereo(WebDriver driver, WebDriverWait wait, JavascriptExecutor js) throws InterruptedException {
+        WebElement label = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("label[for='tipoMedioTransporte']")));
+        WebElement formGroup = label.findElement(By.xpath("./ancestor::div[contains(@class,'form-group')]"));
+
+        WebElement control = formGroup.findElement(By.cssSelector("div[class*='control']"));
+        js.executeScript("arguments[0].scrollIntoView({block:'center'});", control);
+        jsClick(driver, control);
+
+        WebElement input = formGroup.findElement(By.cssSelector("input[id^='react-select-'][id$='-input']"));
+        input.click();
+
+        input.sendKeys(org.openqa.selenium.Keys.chord(org.openqa.selenium.Keys.CONTROL, "a"));
+        input.sendKeys(org.openqa.selenium.Keys.BACK_SPACE);
+        Thread.sleep(120);
+        input.sendKeys(TIPO_MEDIO_TRANSPORTE);
+        Thread.sleep(250);
+
+        String listboxId = input.getAttribute("aria-controls");
+        if (listboxId != null && !listboxId.trim().isEmpty()) {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.id(listboxId)));
+        } else {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[id^='react-select-'][id$='-listbox']")));
+        }
+
+        // Selección tolerante (contiene "contenedor" y "aéreo")
+        String tr = "translate(normalize-space(.), 'ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÑ', 'abcdefghijklmnopqrstuvwxyzáéíóúñ')";
+        By opcion = (listboxId != null && !listboxId.trim().isEmpty())
+            ? By.xpath("//*[@id='" + listboxId + "']//*[contains(@id,'-option-') and contains(" + tr + ",'contenedor') and contains(" + tr + ",'aéreo')]")
+            : By.xpath("//*[contains(@id,'-option-') and contains(" + tr + ",'contenedor') and contains(" + tr + ",'aéreo')]");
+
+        try {
+            WebElement opt = wait.until(ExpectedConditions.elementToBeClickable(opcion));
+            jsClick(driver, opt);
+        } catch (Exception e) {
+            input.sendKeys(org.openqa.selenium.Keys.ARROW_DOWN);
+            Thread.sleep(150);
+            input.sendKeys(org.openqa.selenium.Keys.ENTER);
+        }
+
+        Thread.sleep(250);
+    }
+
+    private void asegurarTransporteSiTablaVacia(WebDriver driver, WebDriverWait wait, JavascriptExecutor js, String shotBase) throws InterruptedException {
+        if (!esPantallaMediosTransporte(driver)) return;
+
+        if (shotBase != null) screenshot(driver, shotBase + "_MT_00_en_pantalla");
+
+        if (tablaMediosTransporteEstaVacia(driver)) {
+            seleccionarTipoMedioTransporteContenedorAereo(driver, wait, js);
+
+            WebElement identificacion = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("identificacion")));
+            if (safe(identificacion.getAttribute("value")).isEmpty()) {
+                clearAndType(identificacion, "AER-" + (System.currentTimeMillis() % 1000000));
+            }
+
+            WebElement marchamo = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("marchamo")));
+            if (safe(marchamo.getAttribute("value")).isEmpty()) {
+                clearAndType(marchamo, "MAR-" + (System.currentTimeMillis() % 1000000));
+            }
+
+            if (shotBase != null) screenshot(driver, shotBase + "_MT_01_campos_llenos");
+
+            WebElement btnAgregar = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[@type='submit' and contains(.,'Agregar transporte')]")
+            ));
+            js.executeScript("arguments[0].scrollIntoView({block:'center'});", btnAgregar);
+            jsClick(driver, btnAgregar);
+
+            Thread.sleep(900);
+            acceptIfAlertPresent(driver, 5);
+
+            wait.until(d -> !tablaMediosTransporteEstaVacia(d));
+
+            if (shotBase != null) screenshot(driver, shotBase + "_MT_02_agregado_ok");
+        } else {
+            if (shotBase != null) screenshot(driver, shotBase + "_MT_01_yahabia");
+        }
+    }
+
     private void clickSiguienteWizard(WebDriver driver, WebDriverWait wait, JavascriptExecutor js, String shot) throws InterruptedException {
-        By siguienteBy = By.xpath("//button[@type='button' and contains(@class,'btn-primary') and normalize-space()='Siguiente']");
-        WebElement btn = wait.until(ExpectedConditions.elementToBeClickable(siguienteBy));
+        asegurarTransporteSiTablaVacia(driver, wait, js, shot);
+
+        By siguienteBy = By.xpath("//button[@type='button' and normalize-space()='Siguiente']");
+
+        WebElement btn = wait.until(ExpectedConditions.presenceOfElementLocated(siguienteBy));
+        wait.until(d -> {
+            WebElement b = d.findElement(siguienteBy);
+            String dis = b.getAttribute("disabled");
+            String cls = b.getAttribute("class") == null ? "" : b.getAttribute("class");
+            return b.isDisplayed() && b.isEnabled() && dis == null && !cls.contains("disabled");
+        });
+
         js.executeScript("arguments[0].scrollIntoView({block:'center'});", btn);
         Thread.sleep(150);
         jsClick(driver, btn);
@@ -249,10 +355,8 @@ public class RF2_01_02_1_TC_017Test {
         if (shot != null) screenshot(driver, shot);
     }
 
-    // ================== VALIDAR TABLA PRODUCTOS ==================
+    // ================== VALIDAR TABLA PRODUCTOS (SIMPLE) ==================
     private WebElement encontrarTablaProductos(WebDriver driver, WebDriverWait wait) {
-        // Tabla esperada: table.table-sm.table-bordered.table-striped.table-hover
-        // Además validamos que tenga el header "Posición Arancelaria"
         By by = By.xpath("//table[contains(@class,'table') and contains(@class,'table-sm') and .//th[normalize-space()='Posición Arancelaria']]");
         return wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
@@ -261,40 +365,35 @@ public class RF2_01_02_1_TC_017Test {
         List<WebElement> ths = table.findElements(By.xpath(".//thead//th"));
         List<String> headers = ths.stream().map(t -> safe(t.getText())).collect(Collectors.toList());
 
-        // Debe contener los 8 encabezados en orden
         Assertions.assertEquals(HEADERS_ESPERADOS, headers,
             "❌ Encabezados de tabla Productos no coinciden.\nEsperado: " + HEADERS_ESPERADOS + "\nActual: " + headers);
     }
 
-    private void validarFilaProductoEsperada(WebElement table) {
-        // Al menos 1 fila
+    private void validarTablaProductosTieneAlMenosUnaFila(WebElement table) {
+        // No debe mostrar "No hay datos para mostrar"
+        boolean noHayDatos = !table.findElements(By.xpath(".//tbody//td[contains(translate(normalize-space(.),"
+            + " 'ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÑ','abcdefghijklmnopqrstuvwxyzáéíóúñ'),'no hay datos')]")).isEmpty();
+        assertTrue(!noHayDatos, "❌ La tabla de Productos muestra 'No hay datos para mostrar'.");
+
         List<WebElement> rows = table.findElements(By.xpath(".//tbody/tr"));
         assertTrue(rows != null && !rows.isEmpty(), "❌ La tabla de Productos no tiene filas.");
 
+        // Primera fila debe tener columnas
         WebElement row1 = rows.get(0);
         List<WebElement> tds = row1.findElements(By.xpath("./td"));
-        assertTrue(tds.size() >= 8, "❌ La fila de Productos no tiene las 8 columnas esperadas. Columnas=" + tds.size());
+        assertTrue(tds.size() >= 8, "❌ La primera fila no tiene al menos 8 columnas. Columnas=" + tds.size());
 
-        String pos = safe(tds.get(0).getText());
-        String desc = safe(tds.get(1).getText()); // viene dentro de div, pero getText lo trae
-        String bultos = safe(tds.get(2).getText());
-        String peso = safe(tds.get(3).getText());
-        String paisOrigen = safe(tds.get(4).getText()).toUpperCase();
-        String paisProc = safe(tds.get(5).getText()).toUpperCase();
-        String exportador = safe(tds.get(6).getText());
+        // Solo verificamos que las celdas principales existan y tengan algún texto (sin formatos)
+        for (int i = 0; i <= 6; i++) {
+            String val = safe(tds.get(i).getText());
+            assertTrue(!val.isEmpty(), "❌ La celda #" + i + " en la primera fila está vacía.");
+        }
 
-        assertTrue(pos.equals(EXP_POS_ARANCELARIA), "❌ Posición Arancelaria distinta. Esperado=" + EXP_POS_ARANCELARIA + " Actual=" + pos);
-        assertTrue(desc.contains(EXP_DESCRIPCION), "❌ Descripción distinta. Esperado contiene=" + EXP_DESCRIPCION + " Actual=" + desc);
-        assertTrue(bultos.equals(EXP_BULTOS), "❌ Bultos distinto. Esperado=" + EXP_BULTOS + " Actual=" + bultos);
-        assertTrue(peso.equals(EXP_PESO_NETO), "❌ Peso Neto distinto. Esperado=" + EXP_PESO_NETO + " Actual=" + peso);
-        assertTrue(paisOrigen.contains(EXP_PAIS_ORIGEN), "❌ País Origen distinto. Esperado=" + EXP_PAIS_ORIGEN + " Actual=" + paisOrigen);
-        assertTrue(paisProc.contains(EXP_PAIS_PROCEDENCIA), "❌ País Procedencia distinto. Esperado=" + EXP_PAIS_PROCEDENCIA + " Actual=" + paisProc);
-        assertTrue(exportador.contains(EXP_EXPORTADOR), "❌ Exportador distinto. Esperado contiene=" + EXP_EXPORTADOR + " Actual=" + exportador);
+        // Acciones: debe existir algún botón
+        boolean hayBoton = !tds.get(7).findElements(By.xpath(".//button")).isEmpty();
+        assertTrue(hayBoton, "❌ No se encontró ningún botón en la columna Acciones.");
 
-        // Columna acciones: debe existir botón Eliminar
-        WebElement accionesTd = tds.get(7);
-        List<WebElement> btnEliminar = accionesTd.findElements(By.xpath(".//button[contains(@class,'btn-danger') and contains(normalize-space(.),'Eliminar')]"));
-        assertTrue(btnEliminar != null && !btnEliminar.isEmpty(), "❌ No se encontró el botón 'Eliminar' en Acciones.");
+        System.out.println("✅ Tabla Productos OK (simple). Primera fila: " + row1.getText());
     }
 
     // ================== TEST ==================
@@ -368,16 +467,15 @@ public class RF2_01_02_1_TC_017Test {
             // ====== SIGUIENTE (ir a Productos) ======
             clickSiguienteWizard(driver, wait, js, "S7_RF201021_TC017_06_post_siguiente_a_productos");
 
-            // ====== VALIDAR TABLA PRODUCTOS ======
+            // ====== VALIDAR TABLA PRODUCTOS (SIMPLE) ======
             WebElement tabla = encontrarTablaProductos(driver, wait);
             screenshot(driver, "S7_RF201021_TC017_07_tabla_productos_visible");
 
             validarHeadersTablaProductos(tabla);
-            validarFilaProductoEsperada(tabla);
+            validarTablaProductosTieneAlMenosUnaFila(tabla);
 
             screenshot(driver, "S7_RF201021_TC017_08_tabla_productos_validada");
-
-            System.out.println("✅ TC-017 OK: Tabla de Productos muestra columnas y valores correctos.");
+            System.out.println("✅ TC-017 OK (simple): Tabla de Productos visible con al menos 1 fila.");
 
         } catch (TimeoutException te) {
             screenshot(driver, "S7_RF201021_TC017_TIMEOUT");

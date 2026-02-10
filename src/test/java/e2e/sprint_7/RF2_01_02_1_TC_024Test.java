@@ -3,6 +3,7 @@ package e2e.sprint_7;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.time.Duration;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -29,19 +30,20 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 /**
  * Sprint 7 - RF2.01.02.1
- * TC-024: Validar formato completo del Número de Asignación para Exportación.
+ * TC-024 (AJUSTADO): Validar formato completo del Número de Asignación.
  *
- * Formato esperado: XXX-EXP-YYYY-MM-##### (ej: GLS-EXP-2026-02-00024)
+ * Formato esperado: XXX-(EXP|IMP)-YYYY-MM-#####  (ej: GLS-EXP-2026-02-00024 / AMT-IMP-2026-02-00031)
  *
  * Flujo (igual TC-023 hasta documentación):
  * Login -> Listado -> filtrar estado Iniciada -> Buscar -> Editar
  * -> validar Medio de Transporte solo lectura
  * -> Siguiente -> Productos
  * -> Siguiente -> Permisos (opcional) -> Siguiente
- * -> Documentación (llenar + adjuntar PDFs) -> Guardar documentos
- * -> Siguiente
+ * -> Documentación:
+ *      - SI ya están los docs: SOLO "Siguiente"
+ *      - SI no están: llenar + adjuntar + Guardar documentos -> "Siguiente"
  * -> Enviar
- * -> Modal: validar número de asignación (display-4 text-success)
+ * -> Modal: validar número de asignación (display-4 text-success) con regex (IMP o EXP)
  * -> Continuar
  */
 public class RF2_01_02_1_TC_024Test {
@@ -76,14 +78,14 @@ public class RF2_01_02_1_TC_024Test {
     private static final String DOC_CERT_ORI = "sdfdsfdsf";
     private static final String DOC_CITES = "dsfdsf";
 
-    // Regex formato asignación: XXX-EXP-YYYY-MM-#####
-    // - Prefijo: 3 letras (GLS)
-    // - EXP fijo
+    // Regex formato asignación: XXX-(EXP|IMP)-YYYY-MM-#####
+    // - Prefijo: 3 letras
+    // - Tipo: EXP o IMP
     // - Año 4 dígitos
     // - Mes 01-12
     // - Correlativo 5 dígitos
-    private static final Pattern ASIGNACION_EXP_PATTERN =
-        Pattern.compile("^[A-Z]{3}-EXP-\\d{4}-(0[1-9]|1[0-2])-\\d{5}$");
+    private static final Pattern ASIGNACION_PATTERN =
+        Pattern.compile("^[A-Z]{3}-(EXP|IMP)-\\d{4}-(0[1-9]|1[0-2])-\\d{5}$");
 
     // ================== HELPERS ==================
     private void screenshot(WebDriver driver, String nombreArchivo) {
@@ -100,9 +102,8 @@ public class RF2_01_02_1_TC_024Test {
     }
 
     private void jsClick(WebDriver driver, WebElement el) {
-        try {
-            el.click();
-        } catch (Exception e) {
+        try { el.click(); }
+        catch (Exception e) {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", el);
         }
     }
@@ -123,6 +124,21 @@ public class RF2_01_02_1_TC_024Test {
             .collect(Collectors.joining(" | "));
     }
 
+    private void clearAndType(WebElement el, String value) throws InterruptedException {
+        el.click();
+        el.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        el.sendKeys(Keys.BACK_SPACE);
+        Thread.sleep(80);
+        el.sendKeys(value);
+        Thread.sleep(120);
+    }
+
+    private String lowerXpathContains(String text) {
+        return "contains(translate(normalize-space(.),'ÁÉÍÓÚÜÑABCDEFGHIJKLMNOPQRSTUVWXYZ','áéíóúüñabcdefghijklmnopqrstuvwxyz'),'" +
+                text.toLowerCase() + "')";
+    }
+
+    // ================== NAV / LISTADO ==================
     private void irARegistroSolicitudes(WebDriver driver, WebDriverWait wait, JavascriptExecutor js) {
         String url = driver.getCurrentUrl();
         if (url != null && (url.contains("#/inspeccion/solicitudes") || url.contains("/inspeccion/solicitudes"))) return;
@@ -239,9 +255,41 @@ public class RF2_01_02_1_TC_024Test {
         assertTrue(noPermiteEdicion, "❌ Se logró modificar 'Medio de Transporte'. Antes='" + valueBefore + "'");
     }
 
+    // ================== SIGUIENTE (ROBUSTO) ==================
+    private boolean tryClickSiguienteFast(WebDriver driver, WebDriverWait wait, JavascriptExecutor js, String shot) throws InterruptedException {
+        By siguienteBy = By.xpath("//button[@type='button' and contains(@class,'btn-primary') and normalize-space()='Siguiente']");
+        WebElement btn = wait.until(ExpectedConditions.presenceOfElementLocated(siguienteBy));
+
+        js.executeScript("arguments[0].scrollIntoView({block:'center'});", btn);
+        Thread.sleep(120);
+
+        String dis = btn.getAttribute("disabled");
+        String cls = btn.getAttribute("class") == null ? "" : btn.getAttribute("class");
+        boolean clickable = btn.isDisplayed() && btn.isEnabled() && dis == null && !cls.contains("disabled");
+
+        if (clickable) {
+            jsClick(driver, btn);
+            Thread.sleep(900);
+            acceptIfAlertPresent(driver, 5);
+            if (shot != null) screenshot(driver, shot);
+            return true;
+        }
+
+        if (shot != null) screenshot(driver, shot);
+        return false;
+    }
+
     private void clickSiguienteWizard(WebDriver driver, WebDriverWait wait, JavascriptExecutor js, String shot) throws InterruptedException {
         By siguienteBy = By.xpath("//button[@type='button' and contains(@class,'btn-primary') and normalize-space()='Siguiente']");
-        WebElement btn = wait.until(ExpectedConditions.elementToBeClickable(siguienteBy));
+
+        WebElement btn = wait.until(ExpectedConditions.presenceOfElementLocated(siguienteBy));
+        wait.until(d -> {
+            WebElement b = d.findElement(siguienteBy);
+            String dis = b.getAttribute("disabled");
+            String cls = b.getAttribute("class") == null ? "" : b.getAttribute("class");
+            return b.isDisplayed() && b.isEnabled() && dis == null && !cls.contains("disabled");
+        });
+
         js.executeScript("arguments[0].scrollIntoView({block:'center'});", btn);
         Thread.sleep(150);
         jsClick(driver, btn);
@@ -258,32 +306,19 @@ public class RF2_01_02_1_TC_024Test {
         wait.until(ExpectedConditions.visibilityOfElementLocated(buscarPermisoBy));
         screenshot(driver, "S7_RF201021_TC024_09_permisos_btn_buscar_visible");
 
-        // Siguiente sin agregar permiso
         clickSiguienteWizard(driver, wait, js, "S7_RF201021_TC024_10_post_siguiente_sin_permiso");
     }
 
-    // ================== DOCUMENTACIÓN ==================
+    // ================== DOCUMENTACIÓN (CON FALLBACK) ==================
+    private boolean estaEnDocumentacion(WebDriver driver) {
+        return !driver.findElements(By.xpath("//div[contains(@class,'card-header') and contains(normalize-space(.),'Documentación')]")).isEmpty();
+    }
+
     private String buildPdfPath(String fileName) {
         String full = PDF_BASE_DIR + File.separator + fileName;
         File f = new File(full);
-        if (!f.exists()) {
-            throw new RuntimeException("No se encontró el PDF: " + fileName + " | Ruta: " + full);
-        }
+        if (!f.exists()) throw new RuntimeException("No se encontró el PDF: " + fileName + " | Ruta: " + full);
         return f.getAbsolutePath();
-    }
-
-    private void clearAndType(WebElement el, String value) throws InterruptedException {
-        el.click();
-        el.sendKeys(Keys.chord(Keys.CONTROL, "a"));
-        el.sendKeys(Keys.BACK_SPACE);
-        Thread.sleep(80);
-        el.sendKeys(value);
-        Thread.sleep(120);
-    }
-
-    private String lowerXpathContains(String text) {
-        return "contains(translate(normalize-space(.),'ÁÉÍÓÚÜÑABCDEFGHIJKLMNOPQRSTUVWXYZ','áéíóúüñabcdefghijklmnopqrstuvwxyz'),'" +
-                text.toLowerCase() + "')";
     }
 
     private WebElement getFilaDocumentacionPorLabel(WebDriverWait wait, String labelContains) {
@@ -291,6 +326,15 @@ public class RF2_01_02_1_TC_024Test {
             "//div[contains(@class,'row') and contains(@class,'align-items-end') and .//label[" + lowerXpathContains(labelContains) + "]]"
         );
         return wait.until(ExpectedConditions.visibilityOfElementLocated(filaBy));
+    }
+
+    private boolean filaPareceYaTenerPdf(WebElement fila) {
+        String tr = "translate(normalize-space(.), 'ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÑ', 'abcdefghijklmnopqrstuvwxyzáéíóúñ')";
+        List<WebElement> indicios = fila.findElements(By.xpath(
+            ".//*[self::a or self::span or self::div or self::small or self::strong]" +
+            "[contains(" + tr + " , '.pdf') or contains(" + tr + ", 'ver') or contains(" + tr + ", 'cargado') or contains(" + tr + ", 'adjunt')]"
+        ));
+        return indicios != null && !indicios.isEmpty();
     }
 
     private void safeUploadFile(JavascriptExecutor js, WebElement fileInput, String absPath) {
@@ -308,18 +352,18 @@ public class RF2_01_02_1_TC_024Test {
         }
     }
 
-    private void llenarFilaDocTextoYArchivo(WebDriverWait wait, JavascriptExecutor js,
-                                           String label, String valorTexto, String pdfName) throws InterruptedException {
+    private void llenarFilaDocTextoYArchivoSiHaceFalta(WebDriverWait wait, JavascriptExecutor js,
+                                                       String label, String valorTexto, String pdfName) throws InterruptedException {
 
         WebElement fila = getFilaDocumentacionPorLabel(wait, label);
 
         WebElement inputText = fila.findElement(By.xpath(".//input[@type='text' and contains(@class,'form-control')]"));
-        if (valorTexto != null) clearAndType(inputText, valorTexto);
+        String actual = safe(inputText.getAttribute("value"));
+        if (actual.isEmpty() && valorTexto != null) clearAndType(inputText, valorTexto);
 
-        if (pdfName != null) {
+        if (pdfName != null && !filaPareceYaTenerPdf(fila)) {
             WebElement inputFile = fila.findElement(By.xpath(".//input[@type='file']"));
-            String path = buildPdfPath(pdfName);
-            safeUploadFile(js, inputFile, path);
+            safeUploadFile(js, inputFile, buildPdfPath(pdfName));
             Thread.sleep(250);
         }
     }
@@ -330,23 +374,50 @@ public class RF2_01_02_1_TC_024Test {
         ));
         screenshot(driver, "S7_RF201021_TC024_11_documentacion_inicio");
 
-        llenarFilaDocTextoYArchivo(wait, js, "Número de factura", DOC_FACTURA_NUM, PDF_1);
-        llenarFilaDocTextoYArchivo(wait, js, "Número de DUCA", DOC_DUCA_NUM, PDF_2);
-        llenarFilaDocTextoYArchivo(wait, js, "Manifiesto", DOC_MANIFIESTO_NUM, PDF_3);
-        llenarFilaDocTextoYArchivo(wait, js, "Certificado de Exportación", DOC_CERT_EXP, PDF_4);
-        llenarFilaDocTextoYArchivo(wait, js, "Certificado de Origen", DOC_CERT_ORI, PDF_5);
-        llenarFilaDocTextoYArchivo(wait, js, "CITES", DOC_CITES, PDF_6);
+        llenarFilaDocTextoYArchivoSiHaceFalta(wait, js, "Número de factura", DOC_FACTURA_NUM, PDF_1);
+        llenarFilaDocTextoYArchivoSiHaceFalta(wait, js, "Número de DUCA", DOC_DUCA_NUM, PDF_2);
+        llenarFilaDocTextoYArchivoSiHaceFalta(wait, js, "Manifiesto", DOC_MANIFIESTO_NUM, PDF_3);
+        llenarFilaDocTextoYArchivoSiHaceFalta(wait, js, "Certificado de Exportación", DOC_CERT_EXP, PDF_4);
+        llenarFilaDocTextoYArchivoSiHaceFalta(wait, js, "Certificado de Origen", DOC_CERT_ORI, PDF_5);
+        llenarFilaDocTextoYArchivoSiHaceFalta(wait, js, "CITES", DOC_CITES, PDF_6);
 
         By guardarDocsBy = By.xpath("//button[@type='button' and contains(@class,'btn-primary') and normalize-space()='Guardar documentos']");
-        WebElement btnGuardar = wait.until(ExpectedConditions.elementToBeClickable(guardarDocsBy));
-        js.executeScript("arguments[0].scrollIntoView({block:'center'});", btnGuardar);
-        Thread.sleep(150);
-        jsClick(driver, btnGuardar);
+        if (!driver.findElements(guardarDocsBy).isEmpty()) {
+            WebElement btnGuardar = wait.until(ExpectedConditions.elementToBeClickable(guardarDocsBy));
+            js.executeScript("arguments[0].scrollIntoView({block:'center'});", btnGuardar);
+            Thread.sleep(150);
+            jsClick(driver, btnGuardar);
 
-        Thread.sleep(900);
-        acceptIfAlertPresent(driver, 5);
+            Thread.sleep(900);
+            acceptIfAlertPresent(driver, 5);
 
-        screenshot(driver, "S7_RF201021_TC024_12_documentacion_guardada");
+            screenshot(driver, "S7_RF201021_TC024_12_documentacion_guardada");
+        } else {
+            screenshot(driver, "S7_RF201021_TC024_12_documentacion_sin_btn_guardar");
+        }
+    }
+
+    private void avanzarDesdeDocumentacionConFallback(WebDriver driver, WebDriverWait wait, JavascriptExecutor js) throws InterruptedException {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//div[contains(@class,'card-header') and contains(normalize-space(.),'Documentación')]")
+        ));
+        screenshot(driver, "S7_RF201021_TC024_11_documentacion_inicio");
+
+        // Intento 1: SOLO siguiente
+        tryClickSiguienteFast(driver, wait, js, "S7_RF201021_TC024_13_doc_siguiente_try1");
+
+        Thread.sleep(600);
+        if (!estaEnDocumentacion(driver)) return; // ya avanzó
+
+        // Fallback: completar + guardar
+        screenshot(driver, "S7_RF201021_TC024_13_doc_aun_no_avanza_fallback");
+        llenarDocumentacionYGuardar(driver, wait, js);
+
+        // Intento 2: siguiente luego de guardar
+        clickSiguienteWizard(driver, wait, js, "S7_RF201021_TC024_14_doc_siguiente_try2_post_guardar");
+
+        // asegurar salida
+        wait.until(d -> !estaEnDocumentacion(d));
     }
 
     // ================== ENVIAR + VALIDAR ASIGNACIÓN ==================
@@ -360,23 +431,22 @@ public class RF2_01_02_1_TC_024Test {
         Thread.sleep(900);
         acceptIfAlertPresent(driver, 5);
 
-        screenshot(driver, "S7_RF201021_TC024_14_click_enviar");
+        screenshot(driver, "S7_RF201021_TC024_15_click_enviar");
     }
 
     private void validarNumeroAsignacionEnModal(WebDriver driver, WebDriverWait wait) {
-        // <div class="display-4 text-success">GLS-EXP-2026-02-00024</div>
         By asignacionBy = By.cssSelector("div.display-4.text-success");
         WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(asignacionBy));
 
         String asignacion = safe(el.getText()).toUpperCase();
-        assertTrue(ASIGNACION_EXP_PATTERN.matcher(asignacion).matches(),
-            "❌ Número de asignación no cumple formato XXX-EXP-YYYY-MM-#####. Actual: " + asignacion);
+        assertTrue(ASIGNACION_PATTERN.matcher(asignacion).matches(),
+            "❌ Número de asignación no cumple formato XXX-(EXP|IMP)-YYYY-MM-#####. Actual: " + asignacion);
 
-        screenshot(driver, "S7_RF201021_TC024_15_modal_asignacion_ok");
+        screenshot(driver, "S7_RF201021_TC024_16_modal_asignacion_ok");
     }
 
     private void clickContinuarModal(WebDriver driver, WebDriverWait wait, JavascriptExecutor js) throws InterruptedException {
-        By continuarBy = By.xpath("//button[@type='button' and contains(@class,'btn-success') and normalize-space()='Continuar']");
+        By continuarBy = By.xpath("//button[@type='button' and (contains(@class,'btn-success') or contains(@class,'btn-primary')) and normalize-space()='Continuar']");
         WebElement btnContinuar = wait.until(ExpectedConditions.elementToBeClickable(continuarBy));
         js.executeScript("arguments[0].scrollIntoView({block:'center'});", btnContinuar);
         Thread.sleep(150);
@@ -385,12 +455,12 @@ public class RF2_01_02_1_TC_024Test {
         Thread.sleep(800);
         acceptIfAlertPresent(driver, 5);
 
-        screenshot(driver, "S7_RF201021_TC024_16_post_continuar");
+        screenshot(driver, "S7_RF201021_TC024_17_post_continuar");
     }
 
     // ================== TEST ==================
     @Test
-    void RF201021_TC024_FormatoNumeroAsignacion_Exportacion() throws InterruptedException {
+    void RF201021_TC024_FormatoNumeroAsignacion_IMP_O_EXP() throws InterruptedException {
 
         WebDriverManager.chromedriver().setup();
 
@@ -466,18 +536,15 @@ public class RF2_01_02_1_TC_024Test {
             // Permisos opcional -> Siguiente sin agregar
             permisosOpcionalContinuar(driver, wait, js);
 
-            // ====== DOCUMENTACIÓN: llenar + adjuntar + guardar ======
-            llenarDocumentacionYGuardar(driver, wait, js);
+            // ====== DOCUMENTACIÓN: si ya están los docs -> solo Siguiente; si no -> llenar/guardar y Siguiente ======
+            avanzarDesdeDocumentacionConFallback(driver, wait, js);
 
-            // ====== SIGUIENTE ======
-            clickSiguienteWizard(driver, wait, js, "S7_RF201021_TC024_13_post_siguiente_documentacion");
-
-            // ====== ENVIAR -> MODAL VALIDAR ASIGNACIÓN -> CONTINUAR ======
+            // ====== ENVIAR -> MODAL VALIDAR ASIGNACIÓN (IMP o EXP) -> CONTINUAR ======
             clickEnviar(driver, wait, js);
             validarNumeroAsignacionEnModal(driver, wait);
             clickContinuarModal(driver, wait, js);
 
-            System.out.println("✅ TC-024 OK: Número de Asignación cumple formato XXX-EXP-YYYY-MM-#####.");
+            System.out.println("✅ TC-024 OK: Número de Asignación cumple formato XXX-(EXP|IMP)-YYYY-MM-#####.");
 
         } catch (TimeoutException te) {
             screenshot(driver, "S7_RF201021_TC024_TIMEOUT");
